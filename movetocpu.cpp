@@ -38,7 +38,6 @@
 // POSSIBILITY OF SUCH DAMAGE.
 //
 // ************************************************************************
-
 #include <bits/stdc++.h>
 
 #include"defs.h"
