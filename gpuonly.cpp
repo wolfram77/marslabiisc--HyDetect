@@ -20,8 +20,6 @@
     along with Rundemanen.  If not, see <http://www.gnu.org/licenses/>.
     
     */
-
-
 #include <bits/stdc++.h>
 #include"defs.h"
 #include <thrust/for_each.h>
@@ -76,7 +74,7 @@ struct sum_Functor {
 //printf("inside first functor");
 
 };
-int  gpuonly(GraphHOST input_graph,int*c,unsigned int *statIndices,unsigned int *edges,Community *dev_community,bool *dirty1,bool*dirty2,int b,graph* G, unsigned int mid)
+int  gpuonly(GraphHOST input_graph,unsigned int*c,unsigned int *statIndices,unsigned int *edges,Community *dev_community,bool *dirty1,bool*dirty2,int b,graph* G, unsigned int mid)
 {
 
 cout<<"performing independent gpu computation"<<endl;
@@ -263,8 +261,7 @@ cout<<"#########################GPU computation ends############################
 /*for(int i=0;i<node;i++)
 	cout<<c[i]<<" ";*/
 cout <<"########################calculate doubtful vertices  in the gpu##########################"<<endl;
-if(b==1)
-return 0;
+
 bool *flag=(bool*)malloc(node*sizeof(bool));
 for(long i=0;i<node;i++)
 	flag[i]=false;
@@ -323,7 +320,7 @@ int sum=0;
 //dirty1=(bool *)malloc(sizeof(bool)*node);
 for(long i=0;i<node;i++)
 	dirty1[i]=false;
-double thresd=0.59;
+double thresd=1;
 double *rel=(double *)malloc(node*sizeof(double));
 for(long i=0;i<node;i++)
 {
@@ -335,10 +332,11 @@ dirty1[i]=true;
 
 double elapsed_secs1 = double(endg - beging) / CLOCKS_PER_SEC;
  cout << "time1="<<elapsed_secs1<<endl;
-
+if(b==1)
+return 0;
 cout<<"###########doubtful computation done###############"<<endl;
 cout<<"############similarity measure###################"<<endl;
-return (* dev_community).g.nb_nodes;
+//return (* dev_community).g.nb_nodes;
 
 /*long *cn=(long*)malloc((node+1)*sizeof(long));
 for(long i=0;i<node;i++){
@@ -428,12 +426,12 @@ while(iij<in){
         iij++;
 }*/
 cout<<"check1"<<endl;
-for(long i=0;i<(*dev_community).g.nb_nodes;i++)
+/*for(long i=0;i<(*dev_community).g.nb_nodes;i++)
 {
 
 	if(dirty1[i]==true)
 		dirty2[i]=true;
-}
+}*/
 /*
 int NV=(*dev_community).g.nb_nodes;
 //NE=Gnew->numEdges;

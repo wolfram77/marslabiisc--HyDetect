@@ -88,12 +88,12 @@ Community::Community(const GraphHOST& input_graph, int nb_pass, double min_mod) 
     g.total_weight = input_graph.total_weight;
 
 
-    if (input_graph.weights.size() > 0) {
+/*    if (input_graph.weights.size() > 0) {
         g.type = WEIGHTED;
         std::cout << " Setting type to WEIGHTED" << std::endl;
     } else {
         std::cout << "Type is already set to UNWEIGHTED" << std::endl;
-    }
+    }*/
 
     //Community
     community_size = g.nb_nodes;

@@ -38,7 +38,6 @@
 // POSSIBILITY OF SUCH DAMAGE.
 //
 // ************************************************************************
-
 #include <bits/stdc++.h>
 //#include"getNextLineAndSplitIntoTokens.cpp"
 #ifndef _DEFS_H
@@ -85,8 +84,11 @@ int edge;
 
 typedef struct
 {
-int statIndices;
-unsigned int *edgesa; 
+unsigned int vertex;
+unsigned int edg;
+unsigned int *statIndices;
+unsigned int *edgesa;
+unsigned int*weighta; 
 } move1;
 
 typedef struct comm
@@ -130,6 +132,7 @@ typedef struct /* the graph data structure */
   //for gpugraph
   vector<unsigned int> degree;
   vector<unsigned int >  links;
+	vector<unsigned int> weights;
   //
   unsigned nnodes, nedges, maxDegNode, secondMaxDegNode;
   unsigned *noutgoing, *nincoming, *srcsrc, *psrc, *edgessrcdst;
@@ -190,12 +193,12 @@ void displayGraph(graph *G);
 void displayGraphEdgeList(graph *G);
 void displayGraphEdgeList(graph *G, FILE* out);
 //Graph Clustering (Community detection)
-int  gpuonly(GraphHOST input_graph,int*c,unsigned int *statIndices,unsigned int *edges,Community *dev_community,bool *dirty,bool *dirty1,int b,graph *G,unsigned int mid);
+int  gpuonly(GraphHOST input_graph,unsigned int*c,unsigned int *statIndices,unsigned int *edges,Community *dev_community,bool *dirty,bool *dirty1,int b,graph *G,unsigned int mid);
 graph* cpuonly(graph *G, graph *Gnew,graph* G1,unsigned int *c,bool *d,bool *d1);
-void verticesToMoveToGPU(graph *G,bool *dirtycpu,move1 *mo,int *c,unsigned int mid);
+void verticesToMoveToGPU(graph *G,bool *dirtycpu,move1 *mo,unsigned int *c,unsigned int mid,unsigned int mid1);
 void verticesToMoveToCPU(unsigned int*statIndices,unsigned int* edges,bool * dirtygpu,move2* mo1,unsigned int *C_orig,int total,int NV,graph *G1,graph *G2,unsigned int mid);
-void modifyCPUstructure(graph *Gnew,graph *G1,bool *dirty,unsigned int *C_orig);
-void modifyGPUstructure(Community *dev1_community,unsigned int *statIndices,unsigned int*edges,bool *dirtyg,int *c,int total,int NV);
+void modifyCPUstructure(graph *Gnew,graph *G1,bool *dirty,unsigned int *C_orig,move2 *mo1);
+void modifyGPUstructure(Community *dev1_community,unsigned int *statIndices,unsigned int*edges,bool *dirtyg,unsigned int *c,int total,int NV,move1 *mo);
 
 void movetogpu(graph *Gnew,graph *G1,bool *d,bool* dirtycpu,int *statIndices,unsigned int *edges,Community* dev_community,int *c,int f);
 void movefinal(graph *Gnew,unsigned int *C_orig,graph*G1, unsigned int *statIndices,unsigned int *edges,Community *dev_community, int *cg,bool *c);

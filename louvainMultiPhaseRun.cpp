@@ -149,22 +149,22 @@ cout<<"inside 2"<<endl;
 
   } //End of while(1)
  cout <<"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"<<Gnew->numVertices<<" "<<Gnew->numEdges<<endl;	
-//  printf("********************************************\n"); 
- // printf("*********    Compact Summary   *************\n");
- // printf("********************************************\n");
- // printf("Number of threads              : %ld\n", numThreads);
- // printf("Total number of phases         : %ld\n", phase);
- // printf("Total number of iterations     : %ld\n", totItr);
+  printf("********************************************\n"); 
+  printf("*********    Compact Summary   *************\n");
+  printf("********************************************\n");
+  printf("Number of threads              : %ld\n", numThreads);
+  printf("Total number of phases         : %ld\n", phase);
+  printf("Total number of iterations     : %ld\n", totItr);
   printf("Final number of clusters       : %ld\n", numClusters);
   printf("Final modularity               : %lf\n", prevMod);
- // printf("Total time for clustering      : %lf\n", totTimeClustering);
- // printf("Total time for building phases : %lf\n", totTimeBuildingPhase);
+  printf("Total time for clustering      : %lf\n", totTimeClustering);
+  printf("Total time for building phases : %lf\n", totTimeBuildingPhase);
   if(coloring == 1) {
      printf("Total time for coloring        : %lf\n", totTimeColoring);
   }
-//  printf("********************************************\n");
+  printf("********************************************\n");
   printf("TOTAL TIME                     : %lf\n", (totTimeClustering+totTimeBuildingPhase+totTimeColoring) );
-//  printf("********************************************\n");
+  printf("********************************************\n");
 
   //Clean up:
   free(C);

@@ -39,15 +39,6 @@
 //
 // ************************************************************************
 
-
-
-
-
-
-
-
-
-
 #include <bits/stdc++.h>
 #include"defs.h"
 using namespace std;
@@ -194,7 +185,7 @@ relk[i]=log(int_deg[i]+1)/log(max[C_orig[i]]+1);}
 }
 
 //cout<<"ok2"<<endl;
-double thres=0.5;
+double thres=0.9;
 //dirty1 = (bool *) malloc ((NV+1)* sizeof(bool)); 
 //dirty2 = (bool *) malloc ((NV+1)* sizeof(bool));
 //bool *dirty3 = (bool *) malloc ((NV+1)* sizeof(bool));
@@ -344,7 +335,7 @@ for(int i=0;i<G1->numVertices;i++)
 //cout<<G->bordno[1]<<endl;
 //cout<<G->bord[1]<<endl;
 //return Gnew;
-double thres2=0.5;
+double thres2=0.01;
  count=0;
 for(int i=0;i<NV;i++)
 	{
