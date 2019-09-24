@@ -1,25 +1,3 @@
-
-/*
-
-    Copyright (C) 2016, University of Bergen
-
-    This file is part of Rundemanen - CUDA C++ parallel program for
-    community detection
-
-    Rundemanen is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    Rundemanen is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with Rundemanen.  If not, see <http://www.gnu.org/licenses/>.
-    
-    */
 #include <bits/stdc++.h>
 #include"defs.h"
 #include <thrust/for_each.h>
@@ -93,11 +71,15 @@ bool islastRound = false;
 int szSmallComm = 10000;
 bool isGauss =true;
 std::cout << "threshold: " << threshold << " binThreshold: " << binThreshold << std::endl;
+//cout<<"Check"<<endl;
 (*dev_community).readPrimes("fewprimes.txt");
+//cout<<"1"<<endl;
 cudaStream_t *streams = NULL;
 int n_streams = 8;
 cudaEvent_t start, stop;
+//cout<<"2"<<endl;
 cudaEventCreate(&start);
+//cout<<"3"<<endl;
 cudaEventCreate(&stop);
 std::vector<clock_t> clkList_decision;
 std::vector<clock_t> clkList_contration;
@@ -113,13 +95,14 @@ if(isGauss)
 else
 	std::cout<<"\n Update method: Jacobi\n";
 
+//cout<<"1"<<endl;
 int stepID = 1;
 int *nc=(int*)malloc(((*dev_community).g.nb_nodes)*sizeof(int));
 int *nc1=(int*)malloc(node*sizeof(int));
 int *index=(int *)malloc(node*sizeof(int));
 int counter=0;
 int node1;
-//###################initialization done##############################//
+cout<<"###################initialization done##############################"<<endl;
  do {
 	std::cout << "---------------Calling method for modularity optimization------------- \n";
 	t2 = clock();
@@ -180,7 +163,7 @@ cout <<"*******************************************************"<<(*dev_communit
 		{
 			pp[nc1[i]].push_back(i);
               	}
-	cout<<"okk"<<endl;
+//	cout<<"okk"<<endl;
 	node1=(*dev_community).g.nb_nodes;
 	counter=counter+1;
 	t2 = clock() - t2;
@@ -320,7 +303,7 @@ int sum=0;
 //dirty1=(bool *)malloc(sizeof(bool)*node);
 for(long i=0;i<node;i++)
 	dirty1[i]=false;
-double thresd=1;
+double thresd=0.5;
 double *rel=(double *)malloc(node*sizeof(double));
 for(long i=0;i<node;i++)
 {

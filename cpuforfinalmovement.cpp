@@ -43,43 +43,14 @@
 
 
 
-//void verticesToMoveToGPU(dirty3,graph *G1,graph Gnew,bool *dirtycpu,move1 *mo,unsigned int *c,unsigned int mid,unsigned int node)
-//
+
 
 
 //we need to move subset of doubtful vertices to the other device. This Code find the subset of the vertices that needs to be moved and store those vertices int mo data structure//
-void movefinal(graph *Gnew,graph *Gnew1,bool *dirty1,bool *dirtycpu,move1 *mo,unsigned int *c,unsigned int mid,unsigned int node)
+void cpuforfinalmovement(graph *G,bool *dirtycpu,bool * dirty,move1 *mo,unsigned int *c,unsigned int mid,unsigned int node)
 {
-/*unsigned int NV=G1->numVertices;
-unsigned int  NE=G1->numEdges;
-unsigned int * vtxPtr=(G1->edgeListPtrs);
-cout<<vtxPtr<<endl;
-edge *vtxInd=(G1->edgeList);
-cout<<vtxInd<<endl;
-bool *f1=(bool*)malloc(sizeof(bool)*NV);
-unsigned int *count1=(unsigned int *)malloc(sizeof(unsigned int )*(NV+1));
-vector<long> *borderval=new vector<long>[NV+1];
-
-for(long i=0;i<NV;i++){
-        f1[i]=false;
-        count1[i]=0;}
-for(long i=0;i<NV;i++)
-        {
-                long adj1=vtxPtr[i];
-                long adj2=vtxPtr[i+1];
-        for(long j=adj1;j<adj2;j++)
-                {
-                        if(dirty3[(vtxInd[j].tail+1)]){
-                                f1[i]=true;
-                                count1[i]=count1[i]+1;
-                                borderval[i].push_back((vtxInd[j].tail+1)-1);   }
-
-                }
-        }*/
-//dirtycpu=(bool *)malloc(sizeof(bool)*
-unsigned int NV,NE;
- NV=Gnew->numVertices;
- NE=Gnew->numEdges;
+unsigned int NV=G->numVertices;
+unsigned int NE=G->numEdges;
 //unsigned int *vtxPtr=G->edgeListPtrs;
 //edge *vtxInd=G->edgeList;
 cout<<NE<<" "<<NV<<endl;
@@ -87,32 +58,27 @@ unsigned int edgec=0;
 unsigned int newV=0;
 for(int i=0;i<NV;i++)
 {
-        if(dirty1[i]){
+        if(dirtycpu[i]){
         newV++;
                         }
 }
-dirtycpu=(bool *)malloc(sizeof(bool)*(NV+newV));
-for(int i=0;i<NV+newV;i++)
-	dirtycpu[i]=true;
 //cout<<"entry"<<endl;
-int nn=newV+NV;
-bool *flaz=(bool *)malloc(sizeof(bool)*(NV+newV));
+int nn=newV;
+bool *flaz=(bool *)malloc(sizeof(bool)*(NV+1));
 unsigned int *statIndices1=(unsigned int*)malloc(sizeof(unsigned int)*nn);
 for(int i=0;i<nn;i++)
 	statIndices1[i]=0;
-for(long i=0;i<NV+newV+1;i++)  {
+for(long i=0;i<NV+1;i++)  {
         flaz[i]=false;
                           
 }
 
-
-unsigned int* vtxPtr=(Gnew->edgeListPtrs);
-edge *vtxInd=(Gnew->edgeList);
+unsigned int* vtxPtr=(G->edgeListPtrs);
+edge *vtxInd=(G->edgeList);
 //cout<<"OKK"<<endl;
 vector<unsigned int> v;
-cout<<"************************************************"<<endl;
 #pragma omp parallel for
-for(long i=0;i<Gnew->numVertices;i++)
+for(long i=0;i<NV;i++)
   {
         if(dirtycpu[i])
         {
@@ -132,8 +98,6 @@ for(long i=0;i<Gnew->numVertices;i++)
 					}
         }
     }
-cout<<"||************************************************||"<<endl;
-
 //cout<<"okk1"<<endl;
 std::sort(v.begin(), v.begin()+v.size());
 //cout<<"k"<<endl;
@@ -148,26 +112,21 @@ for(long i=0;i<=nn;i++)
 vector<unsigned int> *ee=new vector<unsigned int>[nn];
 vector<unsigned int> *weight=new vector<unsigned int>[nn];
 //cout<<"what"<<endl;
-for(int i=0;i<Gnew->numVertices;i++)
-{
-Gnew->bord[i]=false;
-Gnew->bordno[i]=0;
-}
 
 int f;
 int ccd=0;
 pos1=0;
 int qq=0;
 vector<unsigned int> pos2;
-cout<<"value"<<" "<<node<<endl;
+//cout<<"value"<<" "<<node<<endl;
 pos2.resize(node+1);
 std::fill(pos2.begin(),pos2.begin()+pos2.size(),0);
 unsigned int checkpos=0;
 //unsigned int* edgesa1;
 //unsigned int *weighta1;
-cout<<"done mys"<<endl;
+//cout<<"done mys"<<endl;
 #pragma omp parallel for
-for(long i=0;i<Gnew->numVertices;i++)
+for(long i=0;i<NV;i++)
 {f=0;
         if(dirtycpu[i])
         {
@@ -181,12 +140,12 @@ for(long i=0;i<Gnew->numVertices;i++)
 
         for(long j=adj1;j<adj2;j++)
         {
-                if(Gnew->bord[i] && !bordercheck ){
+                if(G->bord[i] && !bordercheck ){
 			//cout<<G->bordno[i]<<"border"<<endl;	
-                        statIndices1[qq]=statIndices1[qq]+Gnew->bordno[i];
+                        statIndices1[qq]=statIndices1[qq]+G->bordno[i];
 			//fout<<mo[qq].statIndices<<endl;
                         bordercheck=true;
-                for(std::vector<unsigned int> ::iterator it=Gnew->bordvalue[i].begin();it<Gnew->bordvalue[i].end();it++){
+                for(std::vector<unsigned int> ::iterator it=G->bordvalue[i].begin();it<G->bordvalue[i].end();it++){
 			if(f1[c[*it-mid]]==0){
 			ee[qq].push_back(qq);
                         ee[qq].push_back(*it);
@@ -279,7 +238,7 @@ if(ee[i].size()!=0){
                 }
 
 }
-//cout<<"happening"<<endl;
+cout<<"happening"<<endl;
 mo->vertex=qq;
 mo->edg=totaledgec;
 mo->statIndices=statIndices1;

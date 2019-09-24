@@ -317,7 +317,7 @@ for(int i=0;i<g.nb_nodes;i++){
 	   bigCommunites.clear();
 	   }
 	 */
-std::cout<<"what can I do1"<<std::endl;
+//std::cout<<"what can I do1"<<std::endl;
 	sc = 0; //std::cin>>sc;
 	int nrBlockForLargeNhoods = 150;
 
@@ -427,7 +427,7 @@ std::cout<<"what can I do1"<<std::endl;
 	report_time(start, stop, "thrust::exclusive_scan");
 
 	int upperBoundonTotalSize = estimatedSizeOfNeighborhoods.back();
-std::cout<<"what can I do2"<<std::endl;
+//std::cout<<"what can I do2"<<std::endl;
 
 	/*
 	   if (hostPrint) {

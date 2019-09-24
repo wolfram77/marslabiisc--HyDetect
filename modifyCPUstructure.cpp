@@ -1,44 +1,3 @@
-// ***********************************************************************
-//
-//            Grappolo: A C++ library for graph clustering
-//               Mahantesh Halappanavar (hala@pnnl.gov)
-//               Pacific Northwest National Laboratory     
-//
-// ***********************************************************************
-//
-//       Copyright (2014) Battelle Memorial Institute
-//                      All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without 
-// modification, are permitted provided that the following conditions 
-// are met:
-//
-// 1. Redistributions of source code must retain the above copyright 
-// notice, this list of conditions and the following disclaimer.
-//
-// 2. Redistributions in binary form must reproduce the above copyright 
-// notice, this list of conditions and the following disclaimer in the 
-// documentation and/or other materials provided with the distribution.
-//
-// 3. Neither the name of the copyright holder nor the names of its 
-// contributors may be used to endorse or promote products derived from 
-// this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
-// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
-// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS 
-// FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE 
-// COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, 
-// INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, 
-// BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-// LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
-// CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT 
-// LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
-// ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
-// POSSIBILITY OF SUCH DAMAGE.
-//
-// ************************************************************************
-
 #include "defs.h"
 
 #include <thrust/host_vector.h>
@@ -90,7 +49,7 @@
 
 
 
-void modifyCPUstructure(graph *Gnew,graph *G1,bool *dirty,unsigned int *C_orig,move2 *mo1){
+void modifyCPUstructure(graph *Gnew,graph *G1,bool *dirty,unsigned int *C_orig,move2 *mo1,unsigned int mid,unsigned int node){
 
 
 unsigned int newV=0;
@@ -283,9 +242,34 @@ graph *Gnew1=(graph *)malloc(sizeof(graph));
 	for (long i=0; i<NV; i++) {
   	   C_orig[i] = -1;
 	}
-displayGraphCharacteristics(Gnew);	
-Gnew1=runMultiPhaseLouvainAlgorithm(Gnew, C_orig, 0, 1000, 0.0001, 0.0001, 6); 
+bool *dirty1,*dirty2;
+dirty1=(bool *)malloc(sizeof(bool)*NV);
+dirty2=(bool*)malloc(sizeof(bool)*NV);
+for(int i=0;i<NV;i++)
+{
+	dirty1[i]=false;
+	dirty2[i]=false;
 
+}
+displayGraphCharacteristics(Gnew);	
+//Gnew1=runMultiPhaseLouvainAlgorithm(Gnew, C_orig, 0, 1000, 0.0001, 0.0001, 6); 
+Gnew1=cpuonly(Gnew,Gnew1,Gnew,C_orig,dirty1,dirty2,1);
+unsigned int new1=0;
+for(int i=0;i<Gnew->numVertices;i++)
+	{
+
+		if(dirty1[i])
+			new1++;
+	}
+cout<<"**********"<<endl;
+unsigned int NV1=NV+new1;
+move1 *mo=new move1[NV1];
+//void movefinal(graph *Gnew,graph *Gnew1,bool *dirtycpu,move1 *mo,unsigned int *c,unsigned int mid,unsigned int node)
+
+//movefinal(Gnew,Gnew1,dirty1,dirty2,mo,C_orig,mid,node);
+//void verticesToMoveToGPU(graph *G,bool *dirtycpu,move1 *mo,unsigned int *c,unsigned int mid,unsigned int node)
+
+//final vertices to move to GPU
 //currMod = parallelLouvianMethod(Gnew, C_orig,6, currMod, 0.001, &tmpTime, &tmpItr);
 //cout<<"cpu current mod="<<currMod<<endl;
 //Gnew->edgeList=edge2;*/

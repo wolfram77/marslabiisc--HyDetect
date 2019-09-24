@@ -1,43 +1,4 @@
-// ***********************************************************************
-//
-//            Grappolo: A C++ library for graph clustering
-//               Mahantesh Halappanavar (hala@pnnl.gov)
-//               Pacific Northwest National Laboratory     
-//
-// ***********************************************************************
-//
-//       Copyright (2014) Battelle Memorial Institute
-//                      All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without 
-// modification, are permitted provided that the following conditions 
-// are met:
-//
-// 1. Redistributions of source code must retain the above copyright 
-// notice, this list of conditions and the following disclaimer.
-//
-// 2. Redistributions in binary form must reproduce the above copyright 
-// notice, this list of conditions and the following disclaimer in the 
-// documentation and/or other materials provided with the distribution.
-//
-// 3. Neither the name of the copyright holder nor the names of its 
-// contributors may be used to endorse or promote products derived from 
-// this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
-// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
-// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS 
-// FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE 
-// COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, 
-// INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, 
-// BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-// LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
-// CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT 
-// LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
-// ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
-// POSSIBILITY OF SUCH DAMAGE.
-//
-// ************************************************************************
+
 #include <bits/stdc++.h>
 //#include"getNextLineAndSplitIntoTokens.cpp"
 #ifndef _DEFS_H
@@ -194,14 +155,16 @@ void displayGraphEdgeList(graph *G);
 void displayGraphEdgeList(graph *G, FILE* out);
 //Graph Clustering (Community detection)
 int  gpuonly(GraphHOST input_graph,unsigned int*c,unsigned int *statIndices,unsigned int *edges,Community *dev_community,bool *dirty,bool *dirty1,int b,graph *G,unsigned int mid);
-graph* cpuonly(graph *G, graph *Gnew,graph* G1,unsigned int *c,bool *d,bool *d1);
+graph* cpuonly(graph *G, graph *Gnew,graph* G1,unsigned int *c,bool *d,bool *d1,int b);
 void verticesToMoveToGPU(graph *G,bool *dirtycpu,move1 *mo,unsigned int *c,unsigned int mid,unsigned int mid1);
 void verticesToMoveToCPU(unsigned int*statIndices,unsigned int* edges,bool * dirtygpu,move2* mo1,unsigned int *C_orig,int total,int NV,graph *G1,graph *G2,unsigned int mid);
-void modifyCPUstructure(graph *Gnew,graph *G1,bool *dirty,unsigned int *C_orig,move2 *mo1);
-void modifyGPUstructure(Community *dev1_community,unsigned int *statIndices,unsigned int*edges,bool *dirtyg,unsigned int *c,int total,int NV,move1 *mo);
+void modifyCPUstructure(graph *Gnew,graph *G1,bool *dirty,unsigned int *C_orig,move2 *mo1,unsigned int mid,unsigned int node);
+void modifyGPUstructure(Community *dev1_community,unsigned int *statIndices,unsigned int*edges,bool *dirtyg,unsigned int *c,int total,int NV,move1 *mo,graph *Gnew,unsigned int mid);
 
 void movetogpu(graph *Gnew,graph *G1,bool *d,bool* dirtycpu,int *statIndices,unsigned int *edges,Community* dev_community,int *c,int f);
-void movefinal(graph *Gnew,unsigned int *C_orig,graph*G1, unsigned int *statIndices,unsigned int *edges,Community *dev_community, int *cg,bool *c);
+//void movefinal(graph *Gnew,unsigned int *C_orig,graph*G1, unsigned int *statIndices,unsigned int *edges,Community *dev_community, int *cg,bool *c);
+void movefinal(graph *Gnew,graph *Gnew1,bool *dirty,bool *dirtycpu,move1 *mo,unsigned int *c,unsigned int mid,unsigned int node);
+
 graph* movetocpu(bool *dirtygpu,int actualnode,unsigned int *statIndices,unsigned int *edges,graph *Gnew,clustering_parameters opts,graph *G1,unsigned int *c,bool *d);
 
 double parallelLouvianMethod(graph *G, unsigned int *C, int nThreads, double Lower, 

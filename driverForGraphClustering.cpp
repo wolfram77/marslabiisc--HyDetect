@@ -1,43 +1,4 @@
-// ***********************************************************************
-//
-//            Grappolo: A C++ library for graph clustering
-//               Mahantesh Halappanavar (hala@pnnl.gov)
-//               Pacific Northwest National Laboratory     
-//
-// ***********************************************************************
-//
-//       Copyright (2014) Battelle Memorial Institute
-//                      All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without 
-// modification, are permitted provided that the following conditions 
-// are met:
-//
-// 1. Redistributions of source code must retain the above copyright 
-// notice, this list of conditions and the following disclaimer.
-//
-// 2. Redistributions in binary form must reproduce the above copyright 
-// notice, this list of conditions and the following disclaimer in the 
-// documentation and/or other materials provided with the distribution.
-//
-// 3. Neither the name of the copyright holder nor the names of its 
-// contributors may be used to endorse or promote products derived from 
-// this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
-// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
-// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS 
-// FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE 
-// COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, 
-// INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, 
-// BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-// LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
-// CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT 
-// LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
-// ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
-// POSSIBILITY OF SUCH DAMAGE.
-//
-// ************************************************************************
+
 
 
 #include "defs.h"
@@ -331,12 +292,15 @@ unsigned int *c=(unsigned int *)malloc((total-mid)*sizeof(unsigned int));
 
 		#pragma omp section
                 {
-                  Gnew=cpuonly(G, Gnew,G1, C_orig,dirty,dirtycpu);
+                  Gnew=cpuonly(G, Gnew,G1, C_orig,dirty,dirtycpu,0);
 	cout<<Gnew->numVertices<<endl;
 			cout<<Gnew->numEdges<<endl;
 		}
 
 	}
+
+
+
 //return 0;
  // duplicateGivenGraph(&g1,G);
 
@@ -374,10 +338,10 @@ verticesToMoveToCPU(statIndices,edges,dirtygpu,mo1,C_orig,total,NV,&g1,Gnew,mid)
 cout<<"@"<<endl;
 //cout<<"after"<<G1->edgeListPtrs[0]<<" "<<G1->edgeListPtrs[1]<<endl;
 //unsigned int *edgeListPtrsM=(unsigned int *)malloc(newV1*sizeof(unsigned int));
-modifyCPUstructure(Gnew,G1,dirty,C_orig,mo1);
+modifyCPUstructure(Gnew,G1,dirty,C_orig,mo1,mid,(*dev1_community).g.nb_nodes);
 cout<<"*"<<endl;
 //void modifyGPUstructure(Community *dev1_community,unsigned int *statIndices,unsigned int*edges,bool *dirtyg,int *c)
-modifyGPUstructure(dev1_community,statIndices,edges,dirtyg,c,total,NV,mo);
+modifyGPUstructure(dev1_community,statIndices,edges,dirtyg,c,total,NV,mo,Gnew,mid);
 cout<<"&"<<endl;
 unsigned int newV11=newV;
 unsigned int newV12=newV1;
