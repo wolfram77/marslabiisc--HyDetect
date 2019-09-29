@@ -441,7 +441,7 @@ unsigned int NV1=NV+new1;
 move1 *mo2=new move1[NV1];
 movefinal(Gnew2,Gnew1,dirty3,dirty2,mo2,c1,mid,((*dev1_community).g.nb_nodes+newV1),bord1,bordno1,bordvalue1);
 //modifyGPUstructure(dev11_community,statIndices,edges,dirtyg1,c1,total,NV,mo2,Gnew1,mid,c2);
-cout<<(*dev11_community).g.nb_nodes<<" "<<(*dev11_community).g.nb_links<<endl;
+//cout<<(*dev11_community).g.nb_nodes<<" "<<(*dev11_community).g.nb_links<<endl;
 cout<<"&"<<endl;
 //modifyGPUstructure(dev11_community,statIndices,edges,dirtyg,c1,total,NV,mo2,Gnew1,mid,c1);
 
