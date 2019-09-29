@@ -48,7 +48,7 @@
 
 
 //we need to move subset of doubtful vertices to the other device. This Code find the subset of the vertices that needs to be moved and store those vertices int mo data structure//
-void movefinal(graph *Gnew,graph *Gnew1,bool *dirty1,bool *dirtycpu,move1 *mo,unsigned int *c,unsigned int mid,unsigned int node)
+void movefinal(graph *Gnew,graph *Gnew1,bool *dirty1,bool *dirtycpu,move1 *mo,unsigned int *c,unsigned int mid,unsigned int node,bool *bord,unsigned int* bordno,vector<unsigned int>* bordvalue)
 {
 /*unsigned int NV=G1->numVertices;
 unsigned int  NE=G1->numEdges;
@@ -91,6 +91,7 @@ for(int i=0;i<NV;i++)
         newV++;
                         }
 }
+cout<<"no of doubtful vertices="<<newV<<endl;
 dirtycpu=(bool *)malloc(sizeof(bool)*(NV+newV));
 for(int i=0;i<NV+newV;i++)
 	dirtycpu[i]=true;
@@ -100,7 +101,7 @@ bool *flaz=(bool *)malloc(sizeof(bool)*(NV+newV));
 unsigned int *statIndices1=(unsigned int*)malloc(sizeof(unsigned int)*nn);
 for(int i=0;i<nn;i++)
 	statIndices1[i]=0;
-for(long i=0;i<NV+newV+1;i++)  {
+for(long i=0;i<NV+newV;i++)  {
         flaz[i]=false;
                           
 }
@@ -137,43 +138,42 @@ cout<<"||************************************************||"<<endl;
 //cout<<"okk1"<<endl;
 std::sort(v.begin(), v.begin()+v.size());
 //cout<<"k"<<endl;
-cout<<"size="<<v.size()<<endl;
+//cout<<"size="<<v.size()<<endl;
+for(int i=0;i<v.size();i++)
+	cout<<v[i]<<" ";
+cout<<endl;
 unsigned int totaledgec=0;
 //ofstream fout("f1.txt");
 int pos1;
 int *pos=(int *)malloc(sizeof(int)*nn);
 #pragma omp parallel for
-for(long i=0;i<=nn;i++)
+for(long i=0;i<nn;i++)
         pos[i]=0;
 vector<unsigned int> *ee=new vector<unsigned int>[nn];
 vector<unsigned int> *weight=new vector<unsigned int>[nn];
 //cout<<"what"<<endl;
-for(int i=0;i<Gnew->numVertices;i++)
-{
-Gnew->bord[i]=false;
-Gnew->bordno[i]=0;
-}
 
 int f;
 int ccd=0;
 pos1=0;
 int qq=0;
 vector<unsigned int> pos2;
-cout<<"value"<<" "<<node<<endl;
-pos2.resize(node+1);
-std::fill(pos2.begin(),pos2.begin()+pos2.size(),0);
+pos2.resize(max(Gnew->numVertices+newV,node));
+//ut<<"value"<<" "<<node<<endl;
+//s2.resize(node+Gnew->numVertices);
+//std::fill(pos2.begin(),pos2.begin()+pos2.size(),0);
 unsigned int checkpos=0;
 //unsigned int* edgesa1;
 //unsigned int *weighta1;
-cout<<"done mys"<<endl;
+//cout<<"done mys"<<endl;
 #pragma omp parallel for
 for(long i=0;i<Gnew->numVertices;i++)
 {f=0;
         if(dirtycpu[i])
         {
         ccd++;
-	int *f1=(int*)malloc(sizeof(int)*(node)); //should be total-NV
-        for(int i1=0;i1<node;i1++)
+	int *f1=(int*)malloc(sizeof(int)*(node+newV)); //should be total-NV
+        for(int i1=0;i1<node+newV;i1++)
 	f1[i1]=0;
 	bool bordercheck=false;
         long adj1 = vtxPtr[i];
@@ -181,38 +181,49 @@ for(long i=0;i<Gnew->numVertices;i++)
 
         for(long j=adj1;j<adj2;j++)
         {
-                if(Gnew->bord[i] && !bordercheck ){
+                if(bord[i] && !bordercheck ){
 			//cout<<G->bordno[i]<<"border"<<endl;	
-                        statIndices1[qq]=statIndices1[qq]+Gnew->bordno[i];
+                        statIndices1[qq]=statIndices1[qq]+bordno[i];
 			//fout<<mo[qq].statIndices<<endl;
                         bordercheck=true;
-                for(std::vector<unsigned int> ::iterator it=Gnew->bordvalue[i].begin();it<Gnew->bordvalue[i].end();it++){
-			if(f1[c[*it-mid]]==0){
+                for(std::vector<unsigned int> ::iterator it=bordvalue[i].begin();it!=bordvalue[i].end();it++){
+		//	cout<<"edge val"<<" "<<*it<<endl;
+			if(f1[c[*it]]==0){
 			ee[qq].push_back(qq);
-                        ee[qq].push_back(*it);
+                        ee[qq].push_back(c[*it]);
 			weight[qq].push_back(1);
 			weight[qq].push_back(1);
-			int b=*it-mid;
-			cout<<"b="<<c[b]<<endl;
-			pos2[c[b]+1]=checkpos;
+			int b=*it;
+		//	cout<<"val="<<b<<endl;
+		//	cout<<"b="<<c[b]<<endl;
+			//cout<<c[b]<<endl;
+		//	cout<<"first"<<" "<<c[*it]<<endl;
+			int a=c[b];
+		//	cout<<"value of a"<<" "<<c[a]<<endl;
+		//	pos2.at(a)=checkpos;
+			
 			checkpos++;
 		//	cout<<"done"<<endl;
-				f1[c[*it-mid]]+=1;}
-			else if(f1[c[*it-mid]]>0)
+				f1[c[*it]]+=1;
+			//	cout<<"ok1"<<endl;
+					}
+			else if(f1[c[*it]]>0)
 			{	//unsigned int a=*it-mid;
-				unsigned int b=(pos2.at(c[*it-mid]));
+			//	int b=0;
+				unsigned int b=(pos2.at(c[*it]));
 				//weighta[qq].push_back(f1[c[*it-mid]]+1);
 				weight[qq].at(b+1)+=1;
 				weight[qq].at(b)+=1;
-				f1[c[*it-mid]]+=1;
+				f1[c[*it]]+=1;
 			}
 		//	fout<<c[*it]<<endl;
                                pos[qq]++;
+			//	cout<<"ok2"<<endl;
                                 pos1++;}
 
 
                                          }
-      if(dirtycpu[(vtxInd[j].tail)+1]){
+       if(dirtycpu[(vtxInd[j].tail)+1]){
 
                 statIndices1[qq]=statIndices1[qq]+1;
                 std::vector<unsigned int>::iterator itr;
@@ -285,7 +296,7 @@ mo->edg=totaledgec;
 mo->statIndices=statIndices1;
 mo->edgesa=edgesa1;
 mo->weighta=weighta1;
-//cout<<"stat"<<mo->edgesa[5]<<" "<<statIndices1[1]<<endl;
+cout<<"stat"<<mo->statIndices[0]<<" "<<statIndices1[0]<<endl;
 //cout<<"1"<<endl;
 //return mo;
 //free(vtxInd);
