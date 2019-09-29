@@ -1,43 +1,4 @@
-// ***********************************************************************
-//
-//            Grappolo: A C++ library for graph clustering
-//               Mahantesh Halappanavar (hala@pnnl.gov)
-//               Pacific Northwest National Laboratory     
-//
-// ***********************************************************************
-//
-//       Copyright (2014) Battelle Memorial Institute
-//                      All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without 
-// modification, are permitted provided that the following conditions 
-// are met:
-//
-// 1. Redistributions of source code must retain the above copyright 
-// notice, this list of conditions and the following disclaimer.
-//
-// 2. Redistributions in binary form must reproduce the above copyright 
-// notice, this list of conditions and the following disclaimer in the 
-// documentation and/or other materials provided with the distribution.
-//
-// 3. Neither the name of the copyright holder nor the names of its 
-// contributors may be used to endorse or promote products derived from 
-// this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
-// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
-// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS 
-// FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE 
-// COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, 
-// INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, 
-// BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-// LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
-// CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT 
-// LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
-// ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
-// POSSIBILITY OF SUCH DAMAGE.
-//
-// ************************************************************************
+
 
 
 #include "defs.h"
@@ -232,7 +193,8 @@ int main(int argc, char** argv) {
   graph* G1 = (graph *) malloc (sizeof(graph));
   graph* G2 = (graph *) malloc (sizeof(graph));
   graph* Gnew=(graph *) malloc (sizeof(graph));
-
+  graph* Gnew1 = (graph *) malloc (sizeof(graph));
+  
   graph g1;
   g1.readFromGR(argv[1]);
   double exeTime = get_time();
@@ -270,7 +232,9 @@ int main(int argc, char** argv) {
 	fout1<<g.edgeList[i].head<<" "<<g.edgeList[i].tail<<" "<<g.edgeList[i].weight<<endl;*/
   displayGraphCharacteristics(&g1);
   duplicateGivenGraph(G,G1);
-  duplicateGivenGraph(G,G2);
+ // displayGraphCharacteristics(G1);
+//return 0;
+ // duplicateGivenGraph(G,G2);
 
   for(long i=0;i<NV;i++)
 	C_orig[i]=-1;
@@ -346,12 +310,16 @@ unsigned int *c=(unsigned int *)malloc((total-mid)*sizeof(unsigned int));
 //mo is the structure to move to GPU partition
 unsigned int edgec=0;
 unsigned int newV=0;
+unsigned int newVd=0;
 for(int i=0;i<NV;i++)
 {
         if(dirtycpu[i]){
         newV++;
+	if(dirty[i] && !dirtycpu[i])
+	newVd++;
 			}
 }
+
 
 
 int nn=newV;
@@ -364,24 +332,119 @@ cout<<"!"<<endl;
 //unsigned int edgec=0;
 //verticesToMoveToCPU((*dev1_community),dirtygpu,mo1,C_orig,total,NV);
 unsigned int newV1=0;
+unsigned int newV1d=0;
 for(int i=0;i<total-NV;i++)
 {
         if(dirtygpu[i]){
         newV1++;
 	
-						}						
-
+	if(!dirtygpu[i] && dirtyg[i])
+	newV1d++;
+	
+			}	
 }
+
+ NV=G1->numVertices;
+unsigned int  NE=G1->numEdges;
+unsigned int * vtxPtr=(G1->edgeListPtrs);
+//cout<<vtxPtr<<endl;
+cout<<G1->edgeListPtrs[1]<<endl;
+edge *vtxInd=(G1->edgeList);
+//cout<<vtxInd<<endl;
+bool *f1=(bool*)malloc(sizeof(bool)*NV);
+unsigned int *count1=(unsigned int *)malloc(sizeof(unsigned int )*(NV+1));
+//vector<long> *borderval=new vector<long>[NV+1];
+bool *bord1=(bool *)malloc(sizeof(bool)*Gnew->numVertices);
+bool *dirty3=(bool *)malloc(sizeof(bool)*Gnew->numVertices);
+bool *dirty2=(bool *)malloc(sizeof(bool)*Gnew->numVertices);
+graph* Gnew2=(graph *)malloc(sizeof(graph));
+duplicateGivenGraph(Gnew,Gnew2);
+unsigned int *bordno1=(unsigned int *)malloc(sizeof(unsigned int)*Gnew->numVertices);
+vector<unsigned int> *bordvalue1=new vector<unsigned int>[Gnew->numVertices];
+for(int i=0;i<Gnew->numVertices;i++){
+	bord1[i]=false;
+	bordno1[i]=0;
+	dirty3[i]=false;
+	dirty2[i]=true;
+	}
+cout<<"((("<<endl;
+for(long i=0;i<NV;i++){
+        f1[i]=false;
+        count1[i]=0;}
+int j=1;
+for(long i=0;i<NV;i++)
+	{
+		if(dirtycpu[i])
+		count1[i]=j;
+		j++;
+
+	}
+int k=0;
+cout<<")))"<<endl;
+ofstream fout("edges.txt");
+for(long i=0;i<NV;i++)
+        {
+                long adj1=vtxPtr[i];
+                long adj2=vtxPtr[i+1];
+		cout<<adj1<<" "<<adj2<<endl;
+		cout<<"value of k"<<" "<<k<<endl;
+        for(long j=adj1;j<adj2;j++)
+                {
+                        if(dirtycpu[(vtxInd[j].tail+1)]){
+                                bord1[C_orig[i]]=true;
+                                bordno1[C_orig[i]]=bordno1[C_orig[i]]+1;
+                                bordvalue1[C_orig[i]].push_back(count1[(vtxInd[j].tail+1)]+newV1+((*dev1_community).g.nb_nodes));
+	//			fout<<count1[(vtxInd[j].tail+1)]+newV1+((*dev1_community).g.nb_nodes)<<endl;
+			  }
+			if(!dirtycpu[(vtxInd[j].tail+1)] && G1->bord[(vtxInd[j].tail+1)])
+			{
+				bord1[C_orig[i]]=true;
+				bordno1[C_orig[i]]+=G1->bordvalue[i].size();
+			//	cout<<G1->bordvalue[i].size()<<endl;
+				for(std::vector<unsigned int> :: iterator it=G1->bordvalue[i].begin();it!=G1->bordvalue[i].end();it++)
+			{	bordvalue1[C_orig[i]].push_back(c[*it-mid]);
+			//	fout<<c[*it-mid]<<endl;
+			//
+			}
+
+			}
+				
+                }
+		k++;
+        }
+//cout<<"DD"<<endl;
 move2 *mo1 = new move2[newV1];
 verticesToMoveToCPU(statIndices,edges,dirtygpu,mo1,C_orig,total,NV,&g1,Gnew,mid);
 cout<<"@"<<endl;
 //cout<<"after"<<G1->edgeListPtrs[0]<<" "<<G1->edgeListPtrs[1]<<endl;
 //unsigned int *edgeListPtrsM=(unsigned int *)malloc(newV1*sizeof(unsigned int));
-modifyCPUstructure(Gnew,G1,dirty,C_orig,mo1,mid,(*dev1_community).g.nb_nodes);
+Gnew1=modifyCPUstructure(Gnew,G1,dirty,C_orig,mo1,mid,(*dev1_community).g.nb_nodes,dirty3);
 cout<<"*"<<endl;
+unsigned int* c1=(unsigned int *)malloc(sizeof(unsigned int)*(*dev1_community).g.nb_nodes+newV1);
+for(unsigned int i=0;i<(*dev1_community).g.nb_nodes+newV1;i++)
+	c1[i]=-1;
 //void modifyGPUstructure(Community *dev1_community,unsigned int *statIndices,unsigned int*edges,bool *dirtyg,int *c)
-modifyGPUstructure(dev1_community,statIndices,edges,dirtyg,c,total,NV,mo,Gnew,mid);
+Community *dev11_community=&dev_community;
+dev11_community=modifyGPUstructure(dev1_community,statIndices,edges,dirtyg,c,total,NV,mo,Gnew,mid,c1,dev11_community);
+int new1=0;
+for(int i=0;i<Gnew->numVertices;i++)
+        {
+
+                if(dirty3[i])
+                        new1++;
+		dirty2[i]=true;
+        }
+
+cout<<"**********"<<endl;
+NV=Gnew->numVertices;
+unsigned int NV1=NV+new1;
+move1 *mo2=new move1[NV1];
+movefinal(Gnew2,Gnew1,dirty3,dirty2,mo2,c1,mid,((*dev1_community).g.nb_nodes+newV1),bord1,bordno1,bordvalue1);
+//modifyGPUstructure(dev11_community,statIndices,edges,dirtyg1,c1,total,NV,mo2,Gnew1,mid,c2);
+cout<<(*dev11_community).g.nb_nodes<<" "<<(*dev11_community).g.nb_links<<endl;
 cout<<"&"<<endl;
+//modifyGPUstructure(dev11_community,statIndices,edges,dirtyg,c1,total,NV,mo2,Gnew1,mid,c1);
+
 unsigned int newV11=newV;
 unsigned int newV12=newV1;
  edgec=0;
@@ -399,7 +462,7 @@ unsigned int newV12=newV1;
 //cpu graph structure changed now change gpu graph structure
  
 
-unsigned int * C_orig1=(unsigned int*)malloc((Gnew->numVertices)*sizeof(unsigned int));
+/*unsigned int * C_orig1=(unsigned int*)malloc((Gnew->numVertices)*sizeof(unsigned int));
 
 graph* Gnew1 = (graph *) malloc (sizeof(graph));
 for(long i=0;i<Gnew->numVertices;i++)

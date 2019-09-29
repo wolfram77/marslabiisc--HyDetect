@@ -126,7 +126,7 @@ void duplicateGivenGraph(graph *Gin, graph *Gout) {
 #ifdef PRINT_DETAILED_STATS_
 	printf("Done duplicating the graph:  %9.6lf sec.\n", time2 - time1);
 #endif	
-	Gout->sVertices    = NV;
+//	Gout->sVertices    = NV;
 	Gout->numVertices  = NV;
 	Gout->numEdges     = NE;
 	Gout->edgeListPtrs = edgeListPtr;

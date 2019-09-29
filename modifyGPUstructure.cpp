@@ -1,24 +1,3 @@
-/*
-
-    Copyright (C) 2016, University of Bergen
-
-    This file is part of Rundemanen - CUDA C++ parallel program for
-    community detection
-
-    Rundemanen is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    Rundemanen is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with Rundemanen.  If not, see <http://www.gnu.org/licenses/>.
-    
-    */
 #include "defs.h"
 
 #include <thrust/host_vector.h>
@@ -61,7 +40,7 @@
 #include <vector>
 #include <omp.h>
 
-void modifyGPUstructure(Community *dev1_community,unsigned int *statIndices,unsigned int*edges,bool *dirtyg,unsigned int *c,int total,int NV,move1* mo,graph *Gn,unsigned int mid)
+Community* modifyGPUstructure(Community *dev1_community,unsigned int *statIndices,unsigned int*edges,bool *dirtyg,unsigned int *c,int total,int NV,move1* mo,graph *Gn,unsigned int mid,unsigned int *c1,Community  *dev11_community)
 {
 unsigned int newV1=0;
 unsigned int edgec1=0;
@@ -449,7 +428,7 @@ for(int i=0;i<modified_graph.nb_links;i++)
 	cout<<edge3[i]<<" "<<weight3[i]<<endl;
 	}
 
-Community *dev11_community;
+//Community *dev11_community;
 Community dev12_community(modified_graph, -1, 0.0001);
 dev11_community=&dev12_community;
 
@@ -470,12 +449,12 @@ cudaStream_t *streams = NULL;
 				szSmallComm ,0.001, isGauss &&((*dev11_community).community_size > szSmallComm),
 				streams, n_streams, start, stop);*/
 cout<<"modified graph has"<<" "<<(*dev11_community).g.nb_nodes<<" "<<modified_graph.nb_nodes<<endl;
-unsigned int*d=(unsigned int*)malloc(sizeof(unsigned int)*(modified_graph.nb_nodes));
+//unsigned int*d=(unsigned int*)malloc(sizeof(unsigned int)*(modified_graph.nb_nodes));
 bool *dirty1=(bool *)malloc(sizeof(bool)*(modified_graph.nb_nodes));
 bool *dirty2=(bool *)malloc(sizeof(bool)*(modified_graph.nb_nodes));
 
 for(int i=0;i<modified_graph.nb_nodes;i++)
-{	d[i]=-1;
+{	c1[i]=-1;
 	dirty1[i]=false;
 	dirty2[i]=false;
 
@@ -483,7 +462,8 @@ for(int i=0;i<modified_graph.nb_nodes;i++)
 cout<<"cur_mod="<<cur_mod<<endl;
 //graph *Gn;unsigned int mid;
 
-int a=gpuonly(modified_graph,d,stat2,edge3,dev11_community,dirty1,dirty2,1,Gn,mid);
+int a=gpuonly(modified_graph,c1,stat2,edge3,dev11_community,dirty1,dirty2,1,Gn,mid);
+cout<<(*dev11_community).g.nb_nodes<<" "<<(*dev11_community).g.nb_links<<endl;
 free(stat);
 free(edge1);
 free(weight1);
@@ -494,4 +474,5 @@ pos.clear();
 //free(flag);
 free(edge2);
 free(weight2);
+return (dev11_community);
 }

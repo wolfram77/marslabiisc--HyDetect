@@ -1,43 +1,3 @@
-// ***********************************************************************
-//
-//            Grappolo: A C++ library for graph clustering
-//               Mahantesh Halappanavar (hala@pnnl.gov)
-//               Pacific Northwest National Laboratory     
-//
-// ***********************************************************************
-//
-//       Copyright (2014) Battelle Memorial Institute
-//                      All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without 
-// modification, are permitted provided that the following conditions 
-// are met:
-//
-// 1. Redistributions of source code must retain the above copyright 
-// notice, this list of conditions and the following disclaimer.
-//
-// 2. Redistributions in binary form must reproduce the above copyright 
-// notice, this list of conditions and the following disclaimer in the 
-// documentation and/or other materials provided with the distribution.
-//
-// 3. Neither the name of the copyright holder nor the names of its 
-// contributors may be used to endorse or promote products derived from 
-// this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
-// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
-// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS 
-// FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE 
-// COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, 
-// INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, 
-// BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-// LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
-// CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT 
-// LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
-// ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
-// POSSIBILITY OF SUCH DAMAGE.
-//
-// ************************************************************************
 #include <bits/stdc++.h>
 #include"defs.h"
 using namespace std;
@@ -74,7 +34,8 @@ graph* cpuonly(graph *G, graph *Gnew,graph* G1, unsigned int *C_orig,bool *dirty
 //G=&g;
 unsigned int NE        = G->numEdges;
 unsigned int *vtxPtr   = G->edgeListPtrs;
-duplicateGivenGraph(G,G1);
+//duplicateGivenGraph(G,G1);
+// displayGraphCharacteristics(G1);
 
 cout<<"//////////////"<<vtxPtr<<"//////////////"<<endl;
 edge * vtxInd   = G->edgeList;
@@ -117,8 +78,8 @@ cout<<"allocation done"<<endl;
 	printf("Graph after modifications:\n");
 	displayGraphCharacteristics(G);
    }*/
-NV = G1->numVertices;
-vtxInd   = G->edgeList;
+NV = G->numVertices;
+//vtxInd   = G->edgeList;
 
 cout<<"vertex Following"<<endl;
 
@@ -147,7 +108,7 @@ cout<<"############################################compute doubtful#############
 vtxPtr   = G1->edgeListPtrs;
 vtxInd   = G1->edgeList;
 //cout<<G1->numVertices<<endl;
-  //displayGraphCharacteristics(G1);
+ displayGraphCharacteristics(G1);
 //cout<<vtxPtr[1]<<endl;
 //cout<<vtxInd[8].head<<endl;
 #pragma omp parallel for
@@ -184,7 +145,7 @@ relk[i]=log(int_deg[i]+1)/log(max[C_orig[i]]+1);}
 }
 
 //cout<<"ok2"<<endl;
-double thres=0.9;
+double thres=0.5;
 //dirty1 = (bool *) malloc ((NV+1)* sizeof(bool)); 
 //dirty2 = (bool *) malloc ((NV+1)* sizeof(bool));
 //bool *dirty3 = (bool *) malloc ((NV+1)* sizeof(bool));
