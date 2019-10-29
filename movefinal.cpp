@@ -1,44 +1,4 @@
-#include "defs.h"
 
-#include <thrust/host_vector.h>
-#include <thrust/device_vector.h>
-#include "graphHOST.h"
-#include "graphGPU.h"
-#include "communityGPU.h"
-#include <iostream>
-#include <ctype.h>
-#include <unistd.h>
-#include <assert.h>
-#include <ctype.h>
-#include <stdio.h>
-#include <string>
-#include "Controller.h"
-#include <stdio.h>
-#include <time.h>
-#include <fstream>
-#include <string>
-#include <iostream>
-#include <limits>
-#include <string.h>
-
-#include <unistd.h>
-#include <cassert>
-#include <inttypes.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <time.h>
-#include <sys/time.h>
-#include <stdlib.h>
-#include <stdarg.h>
-#include <sys/mman.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <cassert>
-#include <inttypes.h>
-#include <vector>
-#include <omp.h>
 
 
 
