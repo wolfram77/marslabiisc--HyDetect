@@ -83,7 +83,7 @@ for(int i=0;i<total-NV;i++)
 unsigned int *noedge=(unsigned int *)malloc(sizeof(unsigned int)*newV1);
 for(int i=0;i<newV1;i++)
         noedge[i]=0;
-cout<<"OKK"<<endl;
+//cout<<"OKK"<<endl;
 for(long i=0;i<total-NV;i++)
 
 {
@@ -125,7 +125,7 @@ for(long i=0;i<total-NV;i++)
                 		e1.push_back(1);
                 		noedge[dv]++;
                 		edgeListPtrsM1[dv]+=1;
-				cout<<"check edge"<<edgeListPtrsM1[dv]<<" ";
+		//		cout<<"check edge"<<edgeListPtrsM1[dv]<<" ";
                                                 }
 		}
                	else  if(dirtygpu[edges[j]] && g1->bord[i+mid])
@@ -158,7 +158,7 @@ for(long i=0;i<total-NV;i++)
 dv++;
         }
 }
-cout<<"OK!"<<endl;
+//cout<<"OK!"<<endl;
 edge *edgesM1=NULL;
 for(int i=0;i<newV1;i++)
 {

@@ -62,7 +62,7 @@ double threshold = 0.000001;
 double binThreshold = 0.01;
 double cur_mod,prev_mod;
 
-cur_mod = -1.0; prev_mod = 0.0;
+cur_mod = -1.0; prev_mod = 1.0;
 
 //cur_mod=0;prev_mod=0.88;
 bool improvement = false;
@@ -303,7 +303,7 @@ int sum=0;
 //dirty1=(bool *)malloc(sizeof(bool)*node);
 for(long i=0;i<node;i++)
 	dirty1[i]=false;
-double thresd=0.5;
+double thresd=1;
 double *rel=(double *)malloc(node*sizeof(double));
 for(long i=0;i<node;i++)
 {
@@ -315,8 +315,7 @@ dirty1[i]=true;
 
 double elapsed_secs1 = double(endg - beging) / CLOCKS_PER_SEC;
  cout << "time1="<<elapsed_secs1<<endl;
-if(b==1)
-return 0;
+
 cout<<"###########doubtful computation done###############"<<endl;
 cout<<"############similarity measure###################"<<endl;
 //return (* dev_community).g.nb_nodes;
@@ -445,7 +444,7 @@ for(int i=0;i<NV;i++)
 	}*/
 unsigned int borderedge=0;
 unsigned int nonborderedge=0;
-double thres2=0.6;
+double thres2=0.1;
 for(long i=0;i<node;i++)
 {
 	if(dirty1[i] && G->bord[i+mid]){

@@ -40,7 +40,7 @@
 #include <vector>
 #include <omp.h>
 
-Community* modifyGPUstructure(Community *dev1_community,unsigned int *statIndices,unsigned int*edges,bool *dirtyg,unsigned int *c,int total,int NV,move1* mo,graph *Gn,unsigned int mid,unsigned int *c1,Community  *dev11_community)
+Community modifyGPUstructure(Community *dev1_community,unsigned int *statIndices,unsigned int*edges,bool *dirtyg,unsigned int *c,int total,int NV,move1* mo,graph *Gn,unsigned int mid,unsigned int *c1)
 {
 unsigned int newV1=0;
 unsigned int edgec1=0;
@@ -428,7 +428,7 @@ for(int i=0;i<modified_graph.nb_links;i++)
 	cout<<edge3[i]<<" "<<weight3[i]<<endl;
 	}
 
-//Community *dev11_community;
+Community *dev11_community;
 Community dev12_community(modified_graph, -1, 0.0001);
 dev11_community=&dev12_community;
 
@@ -474,5 +474,5 @@ pos.clear();
 //free(flag);
 free(edge2);
 free(weight2);
-return (dev11_community);
+return dev12_community;
 }

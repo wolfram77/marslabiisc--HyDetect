@@ -108,7 +108,7 @@ void duplicateGivenGraph(graph *Gin, graph *Gout) {
 	for (unsigned int i=0; i<=NV; i++) {
 		edgeListPtr[i] = vtxPtr[i]; //Prefix Sum
 	}
-	
+	cout<<"...."<<endl;
 	//WARNING: There is a bug in edge counting when self-loops exist
 	edge *edgeList = (edge *) malloc( 2*NE * sizeof(edge)); 
 	assert( edgeList != NULL);	
@@ -120,7 +120,7 @@ void duplicateGivenGraph(graph *Gin, graph *Gout) {
 			edgeList[j].weight = vtxInd[j].weight;
 		}		
 	}
-
+	cout<<"............."<<endl;
 	//The last element of Cumulative will hold the total number of characters
 	double time2 = omp_get_wtime();
 #ifdef PRINT_DETAILED_STATS_

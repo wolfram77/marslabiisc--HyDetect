@@ -50,8 +50,8 @@
 
 
 graph* modifyCPUstructure(graph *Gnew,graph *G1,bool *dirty,unsigned int *C_orig,move2 *mo1,unsigned int mid,unsigned int node,bool *dirty3){
-
-
+cout<<"inside modification"<<endl;
+cout<<mo1->vertex<<" "<<mo1->edgeno<<endl;
 unsigned int newV=0;
 unsigned int edgec1=0;
 cout<<G1->numVertices<<" "<<G1->numEdges<<endl;
@@ -65,6 +65,7 @@ for(int i=0;i<G1->numVertices;i++)
 
 }
 cout<<"doubtful vertices ="<<newV<<endl;
+
 edgec1=G1->numEdges;
 cout<<Gnew->numVertices<<" "<<Gnew->numEdges<<" "<<endl;
 unsigned int *edgeP=(unsigned int*)malloc(sizeof(unsigned int)*(newV+Gnew->numVertices+1));
@@ -76,17 +77,17 @@ for(unsigned int i=0;i<Gnew->numVertices+1;i++)
 for(unsigned int i=Gnew->numVertices+1;i<Gnew->numVertices+1+newV;i++)
 	edgeP[i]=0;
 edge *edge2=(edge*)malloc(sizeof(edge)*(Gnew->edgeListPtrs[Gnew->numVertices]+edgec1));
-cout<<"initial situation"<<endl;
+/*cout<<"initial situation"<<endl;
 for(int i=0;i<Gnew->numVertices+1;i++)
 	cout<<Gnew->edgeListPtrs[i]<<" ";
-cout<<endl;
+cout<<endl;*/
 for(unsigned int i=0;i<(Gnew->edgeListPtrs[Gnew->numVertices]);i++)
         {
 
         edge2[i].head=Gnew->edgeList[i].head;
         edge2[i].tail=Gnew->edgeList[i].tail;
         edge2[i].weight=Gnew->edgeList[i].weight;
-cout<<Gnew->edgeList[i].head<<" "<<Gnew->edgeList[i].tail<<" "<<Gnew->edgeList[i].weight<<endl;
+//cout<<Gnew->edgeList[i].head<<" "<<Gnew->edgeList[i].tail<<" "<<Gnew->edgeList[i].weight<<endl;
         }
 
 int k=0;int jj=0;
@@ -107,37 +108,37 @@ for(unsigned int i=0;i<G1->numVertices;i++)
 
         {	
 		//cout<<"doubtful="<<" "<<i<<endl;
-		flag=(int *)malloc(sizeof(int)*Gnew->numVertices);
+	/*	flag=(int *)malloc(sizeof(int)*Gnew->numVertices);
 		for(unsigned int k1=0;k1<Gnew->numVertices;k1++)
-			flag[k1]=0;
+			flag[k1]=0;*/
                 unsigned int adj1=G1->edgeListPtrs[i];
                 unsigned int adj2=G1->edgeListPtrs[i+1];
 		//cout<<adj1<<" "<<adj2<<endl;
-	#pragma omp parallel for
+//pragma omp parallel for
          for(unsigned int j=adj1;j<adj2;j++)
-                {	if(flag[C_orig[G1->edgeList[j].tail]]==0){
+                {	//if(flag[C_orig[G1->edgeList[j].tail]]==0){
 			
                         edge2[Gnew->edgeListPtrs[Gnew->numVertices]+k].head=ii+(Gnew->numVertices);
                         edge2[Gnew->edgeListPtrs[Gnew->numVertices]+k].tail=C_orig[G1->edgeList[j].tail]; //check for the condition where edge connected to same community,weight will be weight+1
 			pos.at(C_orig[G1->edgeList[j].tail]	)=k;
 			edge2[Gnew->edgeListPtrs[Gnew->numVertices]+k].weight=1;
-			                 flag[C_orig[G1->edgeList[j].tail]]+=1;
+			               //  flag[C_orig[G1->edgeList[j].tail]]+=1;
 //cout<<edge2[Gnew->edgeListPtrs[Gnew->numVertices]+k].head<<" "<<edge2[Gnew->edgeListPtrs[Gnew->numVertices]+k].tail<<" "<<edge2[Gnew->edgeListPtrs[Gnew->numVertices]+k].weight<<endl;
 
 					k++;
-					}
+		/*			}
 		else if(flag[C_orig[G1->edgeList[j].tail]]>0)
 			{
 				edge2[Gnew->edgeListPtrs[Gnew->numVertices]+pos.at(C_orig[G1->edgeList[j].tail])].weight=flag[C_orig[G1->edgeList[j].tail]]+1;
 			}
 // 	 	cout<<edge2[Gnew->edgeListPtrs[Gnew->numVertices]+k].head<<" "<<edge2[Gnew->edgeListPtrs[Gnew->numVertices]+k].tail<<" "<<edge2[Gnew->edgeListPtrs[Gnew->numVertices]+k].weight<<endl;
-			
+		*/	
                 }
 	//	k++;
 		
 		unsigned int adj3=Gnew->edgeListPtrs[C_orig[i]];
                 unsigned int adj4=Gnew->edgeListPtrs[C_orig[i]+1];
-	#pragma omp parallel for
+//pragma omp parallel for
 	for(unsigned int j=adj3;j<adj4;j++)
                 {
                         if(Gnew->edgeList[j].head!=Gnew->edgeList[j].tail && edge2[j].weight!=0)
@@ -156,21 +157,22 @@ for(unsigned int i=0;i<G1->numVertices;i++)
         }
 
 }
+cout<<"done1"<<endl;
 unsigned int prevV=Gnew->numVertices;
 
 //cout<<"ok"<<endl;
 //cout<<"mo"<<" "<<mo1->edgeno<<endl;
 Gnew->numVertices=prevV+newV+mo1->vertex;
 //cout<<"check="<<edgeP[prevV+newV];
-cout<<"After transfer"<<endl;
-cout<<"No of vertices="<<" "<<Gnew->numVertices<<" ";
+//cout<<"After transfer"<<endl;
+//cout<<"No of vertices="<<" "<<Gnew->numVertices<<" ";
 Gnew->numEdges=edgeP[prevV+newV]+mo1->edgeno;
 //cout<<"No of edges="<<" "<<Gnew->numEdges<<" "<<Gnew->edgeListPtrs[newV+prevV]+k<<endl;;
 
 Gnew->edgeListPtrs=(unsigned int*)malloc(sizeof(unsigned int)*(Gnew->numVertices+1));
 //cout<<"okk?"<<endl;
 //Gnew->edgeListPtrs=(unsigned int*)malloc(sizeof(unsigned int)*(newV+Gnew->numVertices+1));
-for(unsigned int i=0;i<newV+prevV+1;i++){
+/*for(unsigned int i=0;i<newV+prevV+1;i++){
 	Gnew->edgeListPtrs[i]=edgeP[i];
 	cout<<edgeP[i]<<endl;
 	}
@@ -180,7 +182,7 @@ for(unsigned int i=0;i<newV+prevV+1;i++){
         cout<<Gnew->edgeListPtrs[i]<<endl;}
 //free(edgeP);
 
-//cout<<"ok?"<<endl;
+//cout<<"ok?"<<endl;*/
 
 //Gnew->edgeList=(edge*)malloc(sizeof(edge)*(k+Gnew->edgeListPtrs[Gnew->numVertices]));
 Gnew->edgeList=(edge *)malloc(sizeof(edge)*Gnew->edgeListPtrs[Gnew->numVertices]);
@@ -191,6 +193,7 @@ for(unsigned int i=0;i<(Gnew->edgeListPtrs[prevV+newV]);i++)
 	Gnew->edgeList[i].tail=edge2[i].tail;
 	Gnew->edgeList[i].weight=edge2[i].weight;
 	}
+cout<<"donefinal"<<endl;
  double prevMod = -1;
   double currMod = -1;
 double tmpTime;
@@ -203,7 +206,7 @@ int tmpItr=0;
 //	Gnew->edgeListPtrs[i]=edgeP[i];
 int j=0;
 if(mo1->vertex!=0){
-cout<<"ok2"<<mo1->edgeListPtrsM[0]<<endl;
+//cout<<"ok2"<<mo1->edgeListPtrsM[0]<<endl;
 for(int i=prevV+newV+1;i<=Gnew->numVertices;i++)
 {	//Gnew->edgeListPtrs[i]+=mo1->edgeListPtrsM[j];
 	cout<<mo1->edgeListPtrsM[j]<<" ";
@@ -211,11 +214,13 @@ for(int i=prevV+newV+1;i<=Gnew->numVertices;i++)
 
 }
 }
+cout<<"done2"<<endl;
 //cout<<"chance"<<endl;
 //Gnew->numEdges=Gnew->edgeListPtrs[Gnew->numVertices]+mo1->edgeno;
 
 j=0;
-cout<<"dirty1="<<" "<<Gnew->edgeListPtrs[prevV+newV]<<" "<<"dirty2"<<Gnew->edgeListPtrs[Gnew->numVertices]<<endl;
+//cout<<"dirty1="<<" "<<Gnew->edgeListPtrs[prevV+newV]<<" "<<"dirty2"<<Gnew->edgeListPtrs[Gnew->numVertices]<<endl;
+if(mo1->vertex>0){
 for(unsigned int i=(Gnew->edgeListPtrs[prevV+newV]);i<Gnew->numEdges;i++)
         {
 
@@ -224,19 +229,21 @@ for(unsigned int i=(Gnew->edgeListPtrs[prevV+newV]);i<Gnew->numEdges;i++)
         Gnew->edgeList[i].weight=mo1->edgesM[j].weight;
 	j++;
         }
+}
+cout<<"done3"<<endl;
 
 C_orig=(unsigned int *)malloc(sizeof(unsigned int)*Gnew->numVertices);
 unsigned int NV=Gnew->numVertices;
-for(int i=0;i<NV+1;i++)
+/*for(int i=0;i<NV+1;i++)
 	cout<<Gnew->edgeListPtrs[i]<<" ";
 cout<<endl;
-
-for( int i=0;i<Gnew->edgeListPtrs[NV];i++)
+*/
+/*for( int i=0;i<Gnew->edgeListPtrs[NV];i++)
 {
 	cout<<Gnew->edgeList[i].head<<" "<<Gnew->edgeList[i].tail<<" "<<Gnew->edgeList[i].weight<<endl;
 
 
-}
+}*/
 graph *Gnew1=(graph *)malloc(sizeof(graph));
 #pragma omp parallel for
 	for (long i=0; i<NV; i++) {
@@ -251,6 +258,7 @@ for(int i=0;i<NV;i++)
 	dirty2[i]=false;
 
 }
+cout<<"done4"<<endl;
 displayGraphCharacteristics(Gnew);
 graph *Gnew2=(graph *)malloc(sizeof(graph));
 duplicateGivenGraph(Gnew,Gnew2);	
@@ -278,7 +286,7 @@ movefinal(Gnew,Gnew1,dirty1,dirty2,mo,C_orig,mid,node);*/
 //free(edge2);
 //e.clear();
 return Gnew1;
-free(flag);
+//free(flag);
 //Gnew->numVertices=Gnew->numVertices+newV-newV11;
 //Gnew->numEdges=Gnew->edgeListPtrs[Gnew->numVertices];
 

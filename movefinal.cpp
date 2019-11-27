@@ -241,7 +241,7 @@ for(long i=0;i<Gnew->numVertices;i++)
                                  }
         }
 	
-//cout<<"1"<<endl;
+cout<<"1"<<endl;
 //cout<<"size"<<" "<<ee[qq].size()<<endl;
 /*edgesa1=(unsigned int*)malloc(sizeof(unsigned int)*(ee[qq].size()));
 
@@ -290,6 +290,7 @@ if(ee[i].size()!=0){
                 }
 
 }
+//cout<<"happening"<<endl;
 mo->vertex=qq;
 mo->edg=totaledgec;
 mo->statIndices=statIndices1;
