@@ -52,7 +52,7 @@ struct sum_Functor {
 //printf("inside first functor");
 
 };
-int  gpuonly(GraphHOST input_graph,unsigned int*c,unsigned int *statIndices,unsigned int *edges,Community *dev_community,bool *dirty1,bool*dirty2,int b,graph* G, unsigned int mid)
+int  gpuonly(GraphHOST input_graph,long*c,unsigned int *statIndices,unsigned int *edges,Community *dev_community,bool *dirty1,bool*dirty2,int b,graph* G, unsigned int mid)
 {
 
 cout<<"performing independent gpu computation"<<endl;
@@ -73,13 +73,13 @@ bool isGauss =true;
 std::cout << "threshold: " << threshold << " binThreshold: " << binThreshold << std::endl;
 //cout<<"Check"<<endl;
 (*dev_community).readPrimes("fewprimes.txt");
-//cout<<"1"<<endl;
+cout<<"1"<<endl;
 cudaStream_t *streams = NULL;
 int n_streams = 8;
 cudaEvent_t start, stop;
-//cout<<"2"<<endl;
+cout<<"2"<<endl;
 cudaEventCreate(&start);
-//cout<<"3"<<endl;
+cout<<"3"<<endl;
 cudaEventCreate(&stop);
 std::vector<clock_t> clkList_decision;
 std::vector<clock_t> clkList_contration;
@@ -241,8 +241,13 @@ for(int i=0;i<node;i++)
 cout<<"#########################GPU computation ends############################################"<<endl;
 
 //return (* dev_community).g.nb_nodes;
-/*for(int i=0;i<node;i++)
-	cout<<c[i]<<" ";*/
+for(int i=0;i<node;i++)
+	cout<<c[i]<<" ";
+for(int i=0;i<(*dev_community).g.nb_links;i++)
+	cout<<(*dev_community).g.links[i]<<" ";
+for(int i=0;i<(*dev_community).g.nb_links;i++)
+        cout<<(*dev_community).g.weights[i]<<" ";
+cout<<endl;
 cout <<"########################calculate doubtful vertices  in the gpu##########################"<<endl;
 
 bool *flag=(bool*)malloc(node*sizeof(bool));
@@ -303,7 +308,7 @@ int sum=0;
 //dirty1=(bool *)malloc(sizeof(bool)*node);
 for(long i=0;i<node;i++)
 	dirty1[i]=false;
-double thresd=1;
+double thresd=0.5;
 double *rel=(double *)malloc(node*sizeof(double));
 for(long i=0;i<node;i++)
 {
@@ -408,6 +413,8 @@ while(iij<in){
         iij++;
 }*/
 cout<<"check1"<<endl;
+if(b==1)
+	return (* dev_community).g.nb_nodes;
 /*for(long i=0;i<(*dev_community).g.nb_nodes;i++)
 {
 
@@ -444,7 +451,7 @@ for(int i=0;i<NV;i++)
 	}*/
 unsigned int borderedge=0;
 unsigned int nonborderedge=0;
-double thres2=0.1;
+double thres2=0.6;
 for(long i=0;i<node;i++)
 {
 	if(dirty1[i] && G->bord[i+mid]){
@@ -471,6 +478,15 @@ for(long i=0;i<node;i++)
  
 	
 }
+
+}
+cout<<"########for ppt#########"<<endl;
+for(int i=0;i<node;i++)
+{
+	if(dirty1[i])
+	cout<<"dirty1"<< " "<<i<<endl;
+	if(dirty2[i])
+	cout<<"dirty2"<<" "<<i<<endl;
 
 }
 

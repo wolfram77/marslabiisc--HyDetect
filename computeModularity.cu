@@ -19,6 +19,7 @@
     along with Rundemanen.  If not, see <http://www.gnu.org/licenses/>.
     
     */
+
 #include <algorithm>
 #include <iostream>
 #include "communityGPU.h"
@@ -33,7 +34,6 @@ struct my_modularity_functor_2 {
 
     my_modularity_functor_2(double _m2) : m2(_m2) {
     }
-
 
 #ifdef RUNONGPU
 

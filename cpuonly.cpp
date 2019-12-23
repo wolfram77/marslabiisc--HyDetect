@@ -98,6 +98,14 @@ Gnew=runMultiPhaseLouvainAlgorithm(G, C_orig,0, 1000, 0.001, 0.001, 6);
 double *max = (double *) malloc (Gnew->numVertices * sizeof(double)); assert(max != 0);
  for(unsigned int i=0;i<Gnew->numVertices;i++)
 max[i]=0;
+cout<<"############ for ppt##########"<<endl;
+for(int i=0;i<NV;i++)
+	cout<<C_orig[i]<<" ";
+cout<<endl;
+for(int i=0;i<Gnew->numEdges;i++)
+{
+cout<<Gnew->edgeList[i].head<<" "<<Gnew->edgeList[i].tail<<" "<<Gnew->edgeList[i].weight<<endl;
+}
 cout<<"############################################compute doubtful###############################################"<<endl;
 
 //cout<<G1->numVertices<<endl;
@@ -145,7 +153,7 @@ relk[i]=log(int_deg[i]+1)/log(max[C_orig[i]]+1);}
 }
 
 //cout<<"ok2"<<endl;
-double thres=0.5;
+double thres=0.6;
 //dirty1 = (bool *) malloc ((NV+1)* sizeof(bool)); 
 //dirty2 = (bool *) malloc ((NV+1)* sizeof(bool));
 //bool *dirty3 = (bool *) malloc ((NV+1)* sizeof(bool));
@@ -296,7 +304,7 @@ for(int i=0;i<G1->numVertices;i++)
 //cout<<G->bordno[1]<<endl;
 //cout<<G->bord[1]<<endl;
 //return Gnew;
-double thres2=0.01;
+double thres2=0.5;
  count=0;
 for(int i=0;i<NV;i++)
 	{
@@ -346,6 +354,14 @@ for(int i=0;i<NV;i++)
 
 	}
 //cout<<count<<endl;
+cout<<"######### again for ppt#########"<<endl;
+for(int i=0;i<NV;i++)
+{
+if(dirty1[i])
+cout<<"dirty1"<< " "<<i<<endl;
+if(dirty2[i])
+cout<<"dirty2"<< " "<<i<<endl;
+}
 cout<<"#####################similarity ends##########################"<<endl;
 
 free(deg);
@@ -356,7 +372,7 @@ free(rcw);
 free(flag1);
 free(flag2);
 free(max);
-free(dirty1);
+//free(dirty1);
 return Gnew;
 //free(dirty2);
 //free(cn);

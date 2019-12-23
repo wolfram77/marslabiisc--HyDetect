@@ -51,7 +51,7 @@ int newV1=0;
                        }
 
 	}
-cout<<"newV1="<<newV1<<endl;
+//cout<<"newV1="<<newV1<<endl;
 if(newV1==0)
 {
 mo1->edgeListPtrsM=NULL;
@@ -184,7 +184,7 @@ mo1->edgeListPtrsM=edgeListPtrsM1;
 mo1->vertex=newV1;
 mo1->edgesM=edgesM1;
 mo1->edgeno=edgec;
-cout<<"for checking"<<mo1->edgeListPtrsM[0]<<" "<<newV1<<endl;
+//cout<<"for checking"<<mo1->edgeListPtrsM[0]<<" "<<newV1<<endl;
 //free(edgesM1);
 
 //free(edgeListPtrsM1);
