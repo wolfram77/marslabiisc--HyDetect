@@ -155,12 +155,12 @@ void displayGraphEdgeList(graph *G);
 void displayGraphEdgeList(graph *G, FILE* out);
 //Graph Clustering (Community detection 
 int  gpuonly(GraphHOST input_graph,long *c,unsigned int *statIndices,unsigned int *edges,Community *dev_community,bool *dirty,bool *dirty1,int b,graph *G,unsigned int mid);
-graph* cpuonly(graph *G, graph *Gnew,graph* G1,unsigned int *c,bool *d,bool *d1,int b);
-void verticesToMoveToGPU(graph *G,bool *dirtycpu,move1 *mo,long *c,unsigned int mid,unsigned int mid1);
-void verticesToMoveToCPU(unsigned int*statIndices,unsigned int* edges,bool * dirtygpu,move2* mo1,unsigned int *C_orig,int total,int NV,graph *G1,graph *G2,unsigned int mid);
-graph * modifyCPUstructure(graph *Gnew,graph *G1,bool *dirty,unsigned int *C_orig,move2 *mo1,unsigned int mid,unsigned int node,bool *d);
-Community modifyGPUstructure(Community *dev1_community,unsigned int *statIndices,unsigned int*edges,bool *dirtyg,long  *c,int total,int NV,move1 *mo,graph *Gnew,unsigned int mid, long *c1);
-void verticesToMoveToGPU1(graph *G,bool *dirtycpu,move1 *mo,long *c,unsigned int mid,unsigned int node);
+graph* cpuonly(graph *G, graph *Gnew,graph* G1,long *c,bool *d,bool *d1,int b);
+void verticesToMoveToGPU(graph *G,bool *dirtycpu,move1 *mo,long *c,unsigned int mid,unsigned int mid1,long *c1);
+void verticesToMoveToCPU(unsigned int*statIndices,unsigned int* edges,bool * dirtygpu,move2* mo1,long *C_orig,int total,int NV,graph *G1,graph *G2,unsigned int mid);
+graph * modifyCPUstructure(graph *Gnew,graph *G1,bool *dirty,long *C_orig,long *C11,move2 *mo1,unsigned int mid,unsigned int node,bool *d,bool *dc);
+Community modifyGPUstructure(Community *dev1_community,unsigned int *statIndices,unsigned int*edges,bool *dirtyg,bool *dirtygpu,long  *c,int total,int NV,move1 *mo,graph *Gnew,unsigned int mid, long *c1,int it,long *cact);
+void verticesToMoveToGPU1(graph *G,graph * gn,bool *dirtycpu,move1 *mo,long *c,unsigned int mid,unsigned int node,int n,long *cc);
 
 void movetogpu(graph *Gnew,graph *G1,bool *d,bool* dirtycpu,int *statIndices,unsigned int *edges,Community* dev_community,int *c,int f);
 //void movefinal(graph *Gnew,unsigned int *C_orig,graph*G1, unsigned int *statIndices,unsigned int *edges,Community *dev_community, int *cg,bool *c);
@@ -172,7 +172,7 @@ double parallelLouvianMethod(graph *G, unsigned int *C, int nThreads, double Low
 				double thresh, double *totTime, int *numItr);
 double algoLouvainWithDistOneColoring(graph* G, unsigned int *C, int nThreads, int* color, 
 			int numColor, double Lower, double thresh, double *totTime, int *numItr);
-graph* runMultiPhaseLouvainAlgorithm(graph *G, unsigned int *C_orig, int coloring, unsigned int minGraphSize, 
+graph* runMultiPhaseLouvainAlgorithm(graph *G, long *C_orig, int coloring, unsigned int minGraphSize, 
 			double threshold, double C_threshold, int numThreads);
 
 

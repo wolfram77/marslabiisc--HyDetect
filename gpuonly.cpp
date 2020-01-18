@@ -239,15 +239,15 @@ for(int i=0;i<node;i++)
 
 
 cout<<"#########################GPU computation ends############################################"<<endl;
-
 //return (* dev_community).g.nb_nodes;
-for(int i=0;i<node;i++)
+//return (* dev_community).g.nb_nodes;
+/*for(int i=0;i<node;i++)
 	cout<<c[i]<<" ";
 for(int i=0;i<(*dev_community).g.nb_links;i++)
 	cout<<(*dev_community).g.links[i]<<" ";
 for(int i=0;i<(*dev_community).g.nb_links;i++)
         cout<<(*dev_community).g.weights[i]<<" ";
-cout<<endl;
+cout<<endl;*/
 cout <<"########################calculate doubtful vertices  in the gpu##########################"<<endl;
 
 bool *flag=(bool*)malloc(node*sizeof(bool));
@@ -413,8 +413,13 @@ while(iij<in){
         iij++;
 }*/
 cout<<"check1"<<endl;
-if(b==1)
-	return (* dev_community).g.nb_nodes;
+if(b==1){
+free(flag);
+free(rel);
+free(max);
+free(int_deg);
+
+	return (* dev_community).g.nb_nodes;}
 /*for(long i=0;i<(*dev_community).g.nb_nodes;i++)
 {
 
@@ -481,7 +486,7 @@ for(long i=0;i<node;i++)
 
 }
 cout<<"########for ppt#########"<<endl;
-for(int i=0;i<node;i++)
+/*for(int i=0;i<node;i++)
 {
 	if(dirty1[i])
 	cout<<"dirty1"<< " "<<i<<endl;
@@ -489,7 +494,7 @@ for(int i=0;i<node;i++)
 	cout<<"dirty2"<<" "<<i<<endl;
 
 }
-
+*/
 cout<<"#####################similarity ends############################"<<endl;
 //return dirty;
 

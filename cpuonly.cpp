@@ -24,7 +24,7 @@ vector<string> getNextLineAndSplitIntoTokens3(istream& str)
     return result;
 }
 
-graph* cpuonly(graph *G, graph *Gnew,graph* G1, unsigned int *C_orig,bool *dirty1,bool *dirty2,int b)
+graph* cpuonly(graph *G, graph *Gnew,graph* G1, long *C_orig,bool *dirty1,bool *dirty2,int b)
 {//clock_t beginc,endc;
 //beginc=clock();  
 //double time1, time2;
@@ -98,14 +98,14 @@ Gnew=runMultiPhaseLouvainAlgorithm(G, C_orig,0, 1000, 0.001, 0.001, 6);
 double *max = (double *) malloc (Gnew->numVertices * sizeof(double)); assert(max != 0);
  for(unsigned int i=0;i<Gnew->numVertices;i++)
 max[i]=0;
-cout<<"############ for ppt##########"<<endl;
+/*cout<<"############ for ppt##########"<<endl;
 for(int i=0;i<NV;i++)
 	cout<<C_orig[i]<<" ";
 cout<<endl;
 for(int i=0;i<Gnew->numEdges;i++)
 {
 cout<<Gnew->edgeList[i].head<<" "<<Gnew->edgeList[i].tail<<" "<<Gnew->edgeList[i].weight<<endl;
-}
+}*/
 cout<<"############################################compute doubtful###############################################"<<endl;
 
 //cout<<G1->numVertices<<endl;
@@ -183,7 +183,7 @@ cout<<"No of doubtful vertices="<<count<<endl;
  // double elapsed_secs2 = double(end2 - begin2) / CLOCKS_PER_SEC;
 // cout << "time2="<<elapsed_secs2<<endl;
 
-cout<<"&&&&&&&&&&&&&doubtful end&&&&&&&&&&&&&&&&&&&&&&&&&"<<endl;
+cout<<"&&&&&&&&&&&&&doubtful end&&&&&&&&&&&&&&&&&&&&&&&&&"<<" "<<b<<endl;
 if(b==1)
 	return Gnew;
 // endc = clock();
@@ -355,13 +355,13 @@ for(int i=0;i<NV;i++)
 	}
 //cout<<count<<endl;
 cout<<"######### again for ppt#########"<<endl;
-for(int i=0;i<NV;i++)
+/*for(int i=0;i<NV;i++)
 {
 if(dirty1[i])
 cout<<"dirty1"<< " "<<i<<endl;
 if(dirty2[i])
 cout<<"dirty2"<< " "<<i<<endl;
-}
+}*/
 cout<<"#####################similarity ends##########################"<<endl;
 
 free(deg);

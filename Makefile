@@ -57,7 +57,7 @@ writeGraphDimacsFormat.o buildNextPhase.o \
 coloringDistanceOne.o utilityClusteringFunctions.o \
 parallelLouvainMethod.o parallelLouvainWithColoring.o \
 louvainMultiPhaseRun.o parseInputParameters.o vertexFollowing.o cpuonly.o\
-verticesToMoveToGPU.o verticesToMoveToCPU.o modifyCPUstructure.o modifyGPUstructure.o \
+verticesToMoveToGPU.o verticesToMoveToCPU.o modifyCPUstructure.o modifyGPUstructure.o movefinal.o verticesToMoveToGPU1.o\
 	
 
 all: $(TARGET_1) message

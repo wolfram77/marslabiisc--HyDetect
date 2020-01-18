@@ -1,24 +1,3 @@
-/*
-
-    Copyright (C) 2016, University of Bergen
-
-    This file is part of Rundemanen - CUDA C++ parallel program for
-    community detection
-
-    Rundemanen is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    Rundemanen is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with Rundemanen.  If not, see <http://www.gnu.org/licenses/>.
-    
-    */
 #include "defs.h"
 
 #include <thrust/host_vector.h>
@@ -61,7 +40,7 @@
 #include <vector>
 #include <omp.h>
 
-void verticesToMoveToCPU(unsigned int *statIndices,unsigned int *edges, bool *dirtygpu,move2* mo1,unsigned int* C_orig,int NV,int total,graph *g1,graph *Gnew,unsigned int mid)
+void verticesToMoveToCPU(unsigned int *statIndices,unsigned int *edges, bool *dirtygpu,move2* mo1,long* C_orig,int NV,int total,graph *g1,graph *Gnew,unsigned int mid)
 {
 int newV1=0;
 	for(int i=0;i<total-NV;i++)
@@ -142,7 +121,7 @@ for(long i=0;i<total-NV;i++)
        		 {       int ch=0;
                 	for(std::vector<unsigned int> ::iterator it=g1->bordvalue[i+mid].begin();it!=g1->bordvalue[i+mid].end();it++){
                			e1.push_back(pos11[i]+count);
-                		e1.push_back(C_orig[*it]);
+                		e1.push_back(*it);
                 		e1.push_back(1);
                 		noedge[dv]++;
                 		edgeListPtrsM1[dv]+=1;
@@ -156,7 +135,7 @@ for(long i=0;i<total-NV;i++)
                 				edgeListPtrsM1[dv]+=1;
                 				noedge[dv]++;
                                                 e1.push_back(pos11[i]+count);
-                                                e1.push_back(C_orig[*it]);
+                                                e1.push_back(*it);
                                                 e1.push_back(1);
                                                 }
                                                 noedge[dv]++;

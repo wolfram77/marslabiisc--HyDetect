@@ -1,0 +1,703 @@
+nnodes=30809122, nedges=1162491966.
+Space required to store data structure ( 9221.692268 MB )
+Part 0 Ver: 16463896 and Part 1 Ver: 14345226
+Total border Nodes: 179916210
+Total part0 Edges: 639370593
+Total part1 Edges: 523121373
+Within displayGraphCharacteristics()
+*******************************************
+General Graph: Characteristics :
+*******************************************
+Number of vertices   :  16463896
+Number of edges      :  274706244
+Maximum out-degree is:  221600
+Average out-degree is:  33.370746
+Expected value of X^2:  4.289192
+Variance is          :  -1109.317482
+Standard deviation   :  -nan
+Isolated vertices    :  199967 (1.21%)
+Degree-one vertices  :  4127930 (25.07%)
+Density              :  144.217167%
+*******************************************
+|V|= 16463896, |E|= 274706244 
+....
+.............
+Done duplicating the graph:   4.862296 sec.
+MaxDeg = 1134921 AvgDeg = 30.1956 STD = 664.26 STD2AvgRatio = 21.9985
+totNbrs =433163268 #links =433163268
+
+Copied  433163268 weights
+
+(Dev Graph)  #Nodes: 14345226  #Links: 216581634  Total_Weight: 0
+community_size: 14345226
+performing independent gpu computation
+threshold: 1e-06 binThreshold: 0.01
+Reading 1339 prime numbers.
+
+1
+2
+3
+
+ Update method:  Gauss–Seidel (in batch) 
+###################initialization done##############################
+---------------Calling method for modularity optimization------------- 
+
+ Inside method for modularity optimization UnWeighted Graph
+Status::  community size - 14345226 threshold - 0.01
+m2: 4.33163e+08
+iteration 1: 0.96 sec
+m2: 4.33163e+08
+-0.000151854
+step: 1, Time for modularity optimization: 2.12
+0.01_1e-06 #E:433163268  TEPS: 2.04322e+08
+Computed modularity: -0.000151854 ( init_mod = -1 ) 
+*******************************************************14345226
+#New Community: 1905704
+Time to compute next graph: 3.81
+---------------Calling method for modularity optimization------------- 
+
+ Inside method for modularity optimization WEIGHTED Graph
+Status::  community size - 1905704 threshold - 0.01
+m2: 4.33163e+08
+iteration 1: 0.49 sec
+m2: 4.33163e+08
+1 Modularity   0.187695 --> 0.211353 Gain: 0.0236584
+iteration 2: 0.45 sec
+m2: 4.33163e+08
+2 Modularity   0.211353 --> 0.263896 Gain: 0.052543
+iteration 3: 0.41 sec
+m2: 4.33163e+08
+3 Modularity   0.263896 --> 0.290302 Gain: 0.026406
+iteration 4: 0.36 sec
+m2: 4.33163e+08
+0.290302
+step: 2, Time for modularity optimization: 2.09
+Computed modularity: 0.290302 ( init_mod = -0.000151854 ) 
+*******************************************************1905704
+#New Community: 174043
+Time to compute next graph: 2.7
+---------------Calling method for modularity optimization------------- 
+
+ Inside method for modularity optimization WEIGHTED Graph
+Status::  community size - 174043 threshold - 0.01
+m2: 4.33163e+08
+iteration 1: 0.03 sec
+m2: 4.33163e+08
+1 Modularity   0.330759 --> 0.341041 Gain: 0.0102822
+iteration 2: 0.01 sec
+m2: 4.33163e+08
+0.341041
+step: 3, Time for modularity optimization: 0.07
+Computed modularity: 0.341041 ( init_mod = 0.290302 ) 
+*******************************************************174043
+#New Community: 159217
+Time to compute next graph: 0.43
+---------------Calling method for modularity optimization------------- 
+
+ Inside method for modularity optimization WEIGHTED Graph
+Status::  community size - 159217 threshold - 0.01
+m2: 4.33155e+08
+iteration 1: 0.01 sec
+m2: 4.33155e+08
+1 Modularity   0.341041 --> 0.390697 Gain: 0.0496556
+iteration 2: 0 sec
+m2: 4.33155e+08
+2 Modularity   0.390697 --> 0.426713 Gain: 0.0360163
+iteration 3: 0 sec
+m2: 4.33155e+08
+0.426713
+step: 4, Time for modularity optimization: 0.02
+Computed modularity: 0.426713 ( init_mod = 0.341041 ) 
+*******************************************************159217
+#New Community: 158367
+Time to compute next graph: 0.38
+---------------Calling method for modularity optimization------------- 
+
+ Inside method for modularity optimization WEIGHTED Graph
+Status::  community size - 158367 threshold - 0.01
+m2: 4.33153e+08
+iteration 1: 0 sec
+m2: 4.33153e+08
+0.426713
+step: 5, Time for modularity optimization: 0.02
+Computed modularity: 0.426713 ( init_mod = 0.426713 ) 
+*******************************************************158367
+---------------Calling method for modularity optimization------------- 
+
+ Inside method for modularity optimization WEIGHTED Graph
+Status::  community size - 158367 threshold - 1e-06
+m2: 4.33153e+08
+iteration 1: 0 sec
+m2: 4.33153e+08
+0.426713
+step: 6, Time for modularity optimization: 0
+Computed modularity: 0.426713 ( init_mod = 0.426713 ) 
+*******************************************************158367
+#phase: 7
+#Record(clk_optimization): 6 #Record(clk_contraction):0
+2.12 -> 
+2.09 -> 
+0.07 -> 
+0.02 -> 
+0.02 -> 
+0 -> 
+ Optimization and contraction time  ratio:100 0
+(graph):      #V  158367 #E   1709
+(new graph)  #V  158367 #E  1709
+#########################GPU computation ends############################################
+########################calculate doubtful vertices  in the gpu##########################
+time1=-61.59
+###########doubtful computation done###############
+############similarity measure###################
+check1
+########for ppt#########
+#####################similarity ends############################
+158367
+gpu ends
+//////////////0x7f7f005b6010//////////////
+allocation done
+vertex Following
+Inside multiphase run
+inside 2
+===============================
+Phase 1
+===============================
+Within parallelLouvianMethod()
+Actual number of threads: 6 (requested: 6)
+Time to initialize: 134.639
+========================================================================================================
+Itr      E_xx            A_x2           Curr-Mod         Time-1(s)       Time-2(s)        T/Itr(s)
+========================================================================================================
+1 	 0 	 4.53556e+12 	 -0.000015 	 86.888 	 0.032  	 86.921
+2 	 8.24977e+07 	 3.9068e+12 	 0.150143 	 65.350 	 0.032  	 65.383
+3 	 3.4106e+08 	 1.55161e+12 	 0.620767 	 33.677 	 0.033  	 33.709
+4 	 3.70453e+08 	 1.70085e+12 	 0.674266 	 26.370 	 0.032  	 26.402
+5 	 3.88613e+08 	 1.82985e+12 	 0.707319 	 22.749 	 0.033  	 22.782
+6 	 3.98092e+08 	 1.88934e+12 	 0.724571 	 20.580 	 0.032  	 20.612
+7 	 4.05921e+08 	 1.96045e+12 	 0.738822 	 18.887 	 0.032  	 18.919
+8 	 4.1207e+08 	 2.0031e+12 	 0.750013 	 17.731 	 0.032  	 17.763
+9 	 4.16932e+08 	 2.01565e+12 	 0.758862 	 16.956 	 0.032  	 16.988
+10 	 4.20378e+08 	 1.98695e+12 	 0.765134 	 16.494 	 0.033  	 16.526
+11 	 4.23155e+08 	 2.05612e+12 	 0.770189 	 15.955 	 0.033  	 15.988
+12 	 4.25019e+08 	 2.05231e+12 	 0.773581 	 15.838 	 0.032  	 15.871
+13 	 4.27108e+08 	 2.07185e+12 	 0.777383 	 15.566 	 0.033  	 15.598
+14 	 4.28316e+08 	 2.09214e+12 	 0.779582 	 15.400 	 0.033  	 15.433
+15 	 4.29468e+08 	 2.09134e+12 	 0.781679 	 15.276 	 0.032  	 15.308
+16 	 4.30167e+08 	 2.06334e+12 	 0.782952 	 15.265 	 0.032  	 15.298
+17 	 4.31001e+08 	 2.08965e+12 	 0.784470 	 15.030 	 0.032  	 15.062
+18 	 4.31518e+08 	 2.06934e+12 	 0.785411 	 15.110 	 0.032  	 15.142
+========================================================================================================
+Total time for 18 iterations is: 449.706474
+========================================================================================================
+Within renumberClustersContiguously()
+Time to renumber clusters: 2.109563
+Number of unique clusters: 1985419
+Done updating C_orig
+Within buildNextLevelGraphOpt(): # of unique clusters= 1985419
+Actual number of threads: 1 (requested: 6)
+16463896
+274706244
+Time to count edges: 16.531
+Time to build the graph: 2.332
+Total time: 19.174
+done1
+===============================
+Phase 2
+===============================
+Within parallelLouvianMethod()
+Actual number of threads: 6 (requested: 6)
+Time to initialize: 0.043
+========================================================================================================
+Itr      E_xx            A_x2           Curr-Mod         Time-1(s)       Time-2(s)        T/Itr(s)
+========================================================================================================
+1 	 4.31001e+08 	 2.08965e+12 	 0.784470 	 4.324 	 0.004  	 4.328
+2 	 4.96877e+08 	 1.73859e+12 	 0.904373 	 4.229 	 0.004  	 4.233
+3 	 5.0785e+08 	 1.69543e+12 	 0.924346 	 3.985 	 0.004  	 3.989
+4 	 5.09978e+08 	 1.63516e+12 	 0.928218 	 3.841 	 0.004  	 3.845
+5 	 5.10373e+08 	 1.66219e+12 	 0.928938 	 3.752 	 0.004  	 3.756
+========================================================================================================
+Total time for 5 iterations is: 20.150193
+========================================================================================================
+Within renumberClustersContiguously()
+Time to renumber clusters: 0.422275
+Number of unique clusters: 464212
+Done updating C_orig
+Within buildNextLevelGraphOpt(): # of unique clusters= 464212
+Actual number of threads: 1 (requested: 6)
+1985419
+12746916
+Time to count edges: 2.088
+Time to build the graph: 0.310
+Total time: 2.456
+done1
+===============================
+Phase 3
+===============================
+Within parallelLouvianMethod()
+Actual number of threads: 6 (requested: 6)
+Time to initialize: 0.014
+========================================================================================================
+Itr      E_xx            A_x2           Curr-Mod         Time-1(s)       Time-2(s)        T/Itr(s)
+========================================================================================================
+1 	 5.09978e+08 	 1.63516e+12 	 0.928218 	 1.513 	 0.001  	 1.514
+2 	 5.20577e+08 	 1.19413e+12 	 0.947512 	 1.307 	 0.001  	 1.308
+3 	 5.23393e+08 	 1.03543e+12 	 0.952639 	 1.005 	 0.001  	 1.006
+4 	 5.24741e+08 	 1.02585e+12 	 0.955092 	 0.891 	 0.001  	 0.892
+5 	 5.25072e+08 	 9.96248e+11 	 0.955694 	 0.831 	 0.001  	 0.831
+========================================================================================================
+Total time for 5 iterations is: 5.550894
+========================================================================================================
+Within renumberClustersContiguously()
+Time to renumber clusters: 0.053121
+Number of unique clusters: 110759
+Done updating C_orig
+Within buildNextLevelGraphOpt(): # of unique clusters= 110759
+Actual number of threads: 1 (requested: 6)
+464212
+4836804
+Time to count edges: 0.415
+Time to build the graph: 0.017
+Total time: 0.445
+done1
+===============================
+Phase 4
+===============================
+Within parallelLouvianMethod()
+Actual number of threads: 6 (requested: 6)
+Time to initialize: 0.001
+========================================================================================================
+Itr      E_xx            A_x2           Curr-Mod         Time-1(s)       Time-2(s)        T/Itr(s)
+========================================================================================================
+1 	 5.24741e+08 	 1.02585e+12 	 0.955092 	 0.106 	 0.000  	 0.106
+2 	 5.28198e+08 	 6.52998e+11 	 0.961385 	 0.079 	 0.000  	 0.079
+3 	 5.29584e+08 	 6.24388e+11 	 0.963908 	 0.069 	 0.000  	 0.069
+4 	 5.29891e+08 	 6.19686e+11 	 0.964467 	 0.066 	 0.000  	 0.067
+========================================================================================================
+Total time for 4 iterations is: 0.321782
+========================================================================================================
+Within renumberClustersContiguously()
+Time to renumber clusters: 0.016369
+Number of unique clusters: 93552
+Done updating C_orig
+Within buildNextLevelGraphOpt(): # of unique clusters= 93552
+Actual number of threads: 1 (requested: 6)
+110759
+398661
+Time to count edges: 0.034
+Time to build the graph: 0.002
+Total time: 0.047
+done1
+===============================
+Phase 5
+===============================
+Within parallelLouvianMethod()
+Actual number of threads: 6 (requested: 6)
+Time to initialize: 0.000
+========================================================================================================
+Itr      E_xx            A_x2           Curr-Mod         Time-1(s)       Time-2(s)        T/Itr(s)
+========================================================================================================
+1 	 5.29584e+08 	 6.24388e+11 	 0.963908 	 0.021 	 0.000  	 0.022
+2 	 5.3143e+08 	 5.37205e+11 	 0.967267 	 0.021 	 0.000  	 0.021
+3 	 5.31661e+08 	 5.31305e+11 	 0.967688 	 0.020 	 0.000  	 0.021
+========================================================================================================
+Total time for 3 iterations is: 0.063004
+========================================================================================================
+Within renumberClustersContiguously()
+Time to renumber clusters: 0.015602
+Number of unique clusters: 93009
+Done updating C_orig
+Within buildNextLevelGraphOpt(): # of unique clusters= 93009
+Actual number of threads: 1 (requested: 6)
+93552
+116363
+Time to count edges: 0.014
+Time to build the graph: 0.002
+Total time: 0.026
+done1
+===============================
+Phase 6
+===============================
+Within parallelLouvianMethod()
+Actual number of threads: 6 (requested: 6)
+Time to initialize: 0.000
+========================================================================================================
+Itr      E_xx            A_x2           Curr-Mod         Time-1(s)       Time-2(s)        T/Itr(s)
+========================================================================================================
+1 	 5.3143e+08 	 5.37205e+11 	 0.967267 	 0.017 	 0.000  	 0.018
+2 	 5.31847e+08 	 5.17174e+11 	 0.968028 	 0.017 	 0.000  	 0.018
+========================================================================================================
+Total time for 2 iterations is: 0.035110
+========================================================================================================
+Within renumberClustersContiguously()
+Time to renumber clusters: 0.014059
+Number of unique clusters: 93009
+Done updating C_orig
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&93009 103528
+********************************************
+*********    Compact Summary   *************
+********************************************
+Number of threads              : 6
+Total number of phases         : 6
+Total number of iterations     : 37
+Final number of clusters       : 93009
+Final modularity               : 0.967267
+Total time for clustering      : 475.827456
+Total time for building phases : 22.146400
+********************************************
+TOTAL TIME                     : 497.973856
+********************************************
+############################################compute doubtful###############################################
+Within displayGraphCharacteristics()
+*******************************************
+General Graph: Characteristics :
+*******************************************
+Number of vertices   :  16463896
+Number of edges      :  274706244
+Maximum out-degree is:  221600
+Average out-degree is:  33.370746
+Expected value of X^2:  4.289192
+Variance is          :  -1109.317482
+Standard deviation   :  -nan
+Isolated vertices    :  199967 (1.21%)
+Degree-one vertices  :  4127930 (25.07%)
+Density              :  144.217167%
+*******************************************
+ok1
+No of doubtful vertices=15960908
+&&&&&&&&&&&&&doubtful end&&&&&&&&&&&&&&&&&&&&&&&&& 0
+####################similarity measure#########################
+######### again for ppt#########
+#####################similarity ends##########################
+cpu ends
+no of doubtful 5646139
+.....
+no no
+no problem
+1 done 5646139
+happening 0 106732204
+!
+1
+|V|= 93009, |E|= 103528 
+....
+.............
+Done duplicating the graph:   0.002996 sec.
+(((
+inside modifyCPU
+114047
+Within displayGraphCharacteristics()
+*******************************************
+General Graph: Characteristics :
+*******************************************
+Number of vertices   :  93009
+Number of edges      :  103528
+Maximum out-degree is:  741
+Average out-degree is:  1.226193
+Expected value of X^2:  38.321786
+Variance is          :  36.818236
+Standard deviation   :  6.067803
+Isolated vertices    :  0 (0.00%)
+Degree-one vertices  :  92063 (98.98%)
+Density              :  0.170446%
+*******************************************
+no of doubtful vertices= 15960908
+114047
+val of count2114047
+
+114047 114047
+93009
+Within displayGraphCharacteristics()
+*******************************************
+General Graph: Characteristics :
+*******************************************
+Number of vertices   :  93009
+Number of edges      :  114047
+Maximum out-degree is:  741
+Average out-degree is:  1.226193
+Expected value of X^2:  38.321786
+Variance is          :  36.818236
+Standard deviation   :  6.067803
+Isolated vertices    :  0 (0.00%)
+Degree-one vertices  :  92063 (98.98%)
+Density              :  0.187764%
+*******************************************
+while updating
+checking
+value 15960908
+check 23844774 0
+edgeListPtrs=23844774
+16053917 11922387
+|V|= 16053917, |E|= 11922387 
+....
+.............
+Done duplicating the graph:   3.221254 sec.
+.........
+Inside multiphase run
+inside 2
+===============================
+Phase 1
+===============================
+Within parallelLouvianMethod()
+Actual number of threads: 6 (requested: 6)
+Time to initialize: 2.704
+========================================================================================================
+Itr      E_xx            A_x2           Curr-Mod         Time-1(s)       Time-2(s)        T/Itr(s)
+========================================================================================================
+1 	 3.76336e+08 	 5.31362e+11 	 0.684979 	 8.965 	 0.032  	 8.997
+2 	 4.72129e+08 	 4.5903e+11 	 0.859334 	 4.726 	 0.032  	 4.757
+3 	 4.0626e+08 	 4.19264e+11 	 0.739445 	 5.747 	 0.032  	 5.779
+========================================================================================================
+Total time for 3 iterations is: 19.533231
+========================================================================================================
+Within renumberClustersContiguously()
+Time to renumber clusters: 0.407825
+Number of unique clusters: 92952
+Done updating C_orig
+Within buildNextLevelGraphOpt(): # of unique clusters= 92952
+Actual number of threads: 1 (requested: 6)
+16053917
+11922387
+Time to count edges: 0.723
+Time to build the graph: 0.014
+Total time: 0.769
+done1
+===============================
+Phase 2
+===============================
+Within parallelLouvianMethod()
+Actual number of threads: 6 (requested: 6)
+Time to initialize: 0.007
+========================================================================================================
+Itr      E_xx            A_x2           Curr-Mod         Time-1(s)       Time-2(s)        T/Itr(s)
+========================================================================================================
+1 	 4.72129e+08 	 4.54665e+11 	 0.763266 	 0.043 	 0.000  	 0.043
+2 	 5.61255e+08 	 3.35186e+11 	 0.907353 	 0.035 	 0.000  	 0.035
+3 	 5.17592e+08 	 3.26208e+11 	 0.836764 	 0.034 	 0.000  	 0.034
+========================================================================================================
+Total time for 3 iterations is: 0.112485
+========================================================================================================
+Within renumberClustersContiguously()
+Time to renumber clusters: 0.019309
+Number of unique clusters: 92473
+Done updating C_orig
+Within buildNextLevelGraphOpt(): # of unique clusters= 92473
+Actual number of threads: 1 (requested: 6)
+92952
+98937
+Time to count edges: 0.046
+Time to build the graph: 0.013
+Total time: 0.092
+done1
+===============================
+Phase 3
+===============================
+Within parallelLouvianMethod()
+Actual number of threads: 6 (requested: 6)
+Time to initialize: 0.006
+========================================================================================================
+Itr      E_xx            A_x2           Curr-Mod         Time-1(s)       Time-2(s)        T/Itr(s)
+========================================================================================================
+1 	 5.61255e+08 	 3.35186e+11 	 0.907353 	 0.034 	 0.000  	 0.034
+2 	 6.07556e+08 	 3.2984e+11 	 0.982205 	 0.034 	 0.000  	 0.034
+3 	 6.10275e+08 	 3.27572e+11 	 0.986601 	 0.034 	 0.000  	 0.034
+4 	 6.10275e+08 	 3.21915e+11 	 0.986601 	 0.034 	 0.000  	 0.034
+========================================================================================================
+Total time for 4 iterations is: 0.136531
+========================================================================================================
+Within renumberClustersContiguously()
+Time to renumber clusters: 0.024377
+Number of unique clusters: 92446
+Done updating C_orig
+Within buildNextLevelGraphOpt(): # of unique clusters= 92446
+Actual number of threads: 1 (requested: 6)
+92473
+94775
+Time to count edges: 0.047
+Time to build the graph: 0.013
+Total time: 0.095
+done1
+===============================
+Phase 4
+===============================
+Within parallelLouvianMethod()
+Actual number of threads: 6 (requested: 6)
+Time to initialize: 0.007
+========================================================================================================
+Itr      E_xx            A_x2           Curr-Mod         Time-1(s)       Time-2(s)        T/Itr(s)
+========================================================================================================
+1 	 6.10275e+08 	 3.27572e+11 	 0.986601 	 0.034 	 0.000  	 0.035
+2 	 6.10275e+08 	 3.26699e+11 	 0.986601 	 0.034 	 0.000  	 0.034
+========================================================================================================
+Total time for 2 iterations is: 0.068940
+========================================================================================================
+Within renumberClustersContiguously()
+Time to renumber clusters: 0.024196
+Number of unique clusters: 92446
+Done updating C_orig
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&92446 94330
+********************************************
+*********    Compact Summary   *************
+********************************************
+Number of threads              : 6
+Total number of phases         : 4
+Total number of iterations     : 12
+Final number of clusters       : 92446
+Final modularity               : 0.986601
+Total time for clustering      : 19.851187
+Total time for building phases : 0.956548
+********************************************
+TOTAL TIME                     : 20.807736
+********************************************
+dirty1 13383368
+okk done copying
+*********************
+????????????????????????????
+value 118413208
+::::::::::::::::
+stat 0
+stat 43
+stat 0
+stat 0
+stat 0
+tocheck 0
+stat2 0
+stat2 43
+stat2 0
+stat2 0
+stat2 0
+stat2 0
+stat2 43
+stat2 43
+stat2 43
+stat2 43
+stat3 0
+stat3 43
+stat3 43
+stat3 43
+stat3 43
+stat3 43
+stat3 86
+stat3 129
+stat3 172
+stat3 215
+check final statIndices
+0 43 43 43 43 43 86 129 172 215 ::::::::
+1 170 6 61 52 44 76 75 36 11 MaxDeg = 5986 AvgDeg = 6.17134 STD = 18.2187 STD2AvgRatio = 2.95215
+totNbrs =118414917 #links =486254351
+
+Copied  486254351 weights
+
+(Dev Graph)  #Nodes: 19187874  #Links: 243127175  Total_Weight: 0
+community_size: 19187874
+.........
+performing independent gpu computation
+threshold: 1e-06 binThreshold: 0.01
+Reading 1339 prime numbers.
+
+1
+2
+3
+
+ Update method:  Gauss–Seidel (in batch) 
+###################initialization done##############################
+---------------Calling method for modularity optimization------------- 
+
+ Inside method for modularity optimization UnWeighted Graph
+Status::  community size - 19187874 threshold - 0.01
+m2: 4.86254e+08
+iteration 1: 0.210048 sec
+m2: 4.86254e+08
+1 Modularity   0.120804 --> 0.134808 Gain: 0.0140043
+iteration 2: 0.229952 sec
+m2: 4.86254e+08
+2 Modularity   0.134808 --> 0.154015 Gain: 0.0192065
+iteration 3: 0.230016 sec
+m2: 4.86254e+08
+0.154015
+step: 1, Time for modularity optimization: 1.02
+0.01_1e-06 #E:486254351  TEPS: 4.7672e+08
+Computed modularity: 0.154015 ( init_mod = -1 ) 
+*******************************************************19187874
+#New Community: 5865128
+Time to compute next graph: 65.31
+---------------Calling method for modularity optimization------------- 
+
+ Inside method for modularity optimization WEIGHTED Graph
+Status::  community size - 5865128 threshold - 0.01
+m2: 9.56481e+07
+iteration 1: 0.050048 sec
+m2: 9.56481e+07
+0.498541
+step: 2, Time for modularity optimization: 0.14
+Computed modularity: 0.498541 ( init_mod = 0.154015 ) 
+*******************************************************5865128
+#New Community: 5789787
+Time to compute next graph: 1.91
+---------------Calling method for modularity optimization------------- 
+
+ Inside method for modularity optimization WEIGHTED Graph
+Status::  community size - 5789787 threshold - 0.01
+m2: 9.56481e+07
+iteration 1: 0.029952 sec
+m2: 9.56481e+07
+0.51691
+step: 3, Time for modularity optimization: 0.08
+Computed modularity: 0.51691 ( init_mod = 0.498541 ) 
+*******************************************************5789787
+#New Community: 5760971
+Time to compute next graph: 1.61
+---------------Calling method for modularity optimization------------- 
+
+ Inside method for modularity optimization WEIGHTED Graph
+Status::  community size - 5760971 threshold - 0.01
+m2: 9.56481e+07
+iteration 1: 0.030016 sec
+m2: 9.56481e+07
+1 Modularity   0.527085 --> 0.541046 Gain: 0.0139605
+iteration 2: 0.009984 sec
+m2: 9.56481e+07
+0.541046
+step: 4, Time for modularity optimization: 0.1
+Computed modularity: 0.541046 ( init_mod = 0.51691 ) 
+*******************************************************5760971
+#New Community: 5752525
+Time to compute next graph: 0.97
+---------------Calling method for modularity optimization------------- 
+
+ Inside method for modularity optimization WEIGHTED Graph
+Status::  community size - 5752525 threshold - 0.01
+m2: 9.56481e+07
+iteration 1: 0.030016 sec
+m2: 9.56481e+07
+0.541046
+step: 5, Time for modularity optimization: 0.06
+Computed modularity: 0.541046 ( init_mod = 0.541046 ) 
+*******************************************************5752525
+---------------Calling method for modularity optimization------------- 
+
+ Inside method for modularity optimization WEIGHTED Graph
+Status::  community size - 5752525 threshold - 0.0001
+m2: 9.56481e+07
+iteration 1: 0.030016 sec
+m2: 9.56481e+07
+0.541046
+step: 6, Time for modularity optimization: 0.08
+Computed modularity: 0.541046 ( init_mod = 0.541046 ) 
+*******************************************************5752525
+#phase: 7
+#Record(clk_optimization): 6 #Record(clk_contraction):0
+1.02 -> 
+0.14 -> 
+0.08 -> 
+0.1 -> 
+0.06 -> 
+0.08 -> 
+ Optimization and contraction time  ratio:100 0
+(graph):      #V  5752525 #E   47449
+(new graph)  #V  5752525 #E  47449
+#########################GPU computation ends############################################
+########################calculate doubtful vertices  in the gpu##########################
+time1=-740.3
+###########doubtful computation done###############
+############similarity measure###################
+check1
+5752525 47449

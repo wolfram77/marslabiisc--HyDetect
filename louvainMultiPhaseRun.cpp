@@ -8,7 +8,7 @@ using namespace std;
 // Return: C_orig will hold the cluster ids for vertices in the original graph
 //         Assume C_orig is initialized appropriately
 //WARNING: Graph G will be destroyed at the end of this routine
-graph* runMultiPhaseLouvainAlgorithm(graph *G, unsigned int *C_orig, int coloring, unsigned int minGraphSize,
+graph* runMultiPhaseLouvainAlgorithm(graph *G, long *C_orig, int coloring, unsigned int minGraphSize,
 			double threshold, double C_threshold, int numThreads) 
 {
   double totTimeClustering=0, totTimeBuildingPhase=0, totTimeColoring=0, tmpTime;

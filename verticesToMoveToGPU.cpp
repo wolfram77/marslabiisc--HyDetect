@@ -1,24 +1,3 @@
-/*
-
-    Copyright (C) 2016, University of Bergen
-
-    This file is part of Rundemanen - CUDA C++ parallel program for
-    community detection
-
-    Rundemanen is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    Rundemanen is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with Rundemanen.  If not, see <http://www.gnu.org/licenses/>.
-    
-    */
 #include "defs.h"
 
 #include <thrust/host_vector.h>
@@ -68,13 +47,10 @@
 
 
 //we need to move subset of doubtful vertices to the other device. This Code find the subset of the vertices that needs to be moved and store those vertices int mo data structure//
-void verticesToMoveToGPU(graph *G,bool *dirtycpu,move1 *mo,long *c,unsigned int mid,unsigned int node)
+void verticesToMoveToGPU(graph *G,bool *dirtycpu,move1 *mo,long *c,unsigned int mid,unsigned int node,long *C_orig)
 {
 unsigned int NV=G->numVertices;
 unsigned int NE=G->numEdges;
-//unsigned int *vtxPtr=G->edgeListPtrs;
-//edge *vtxInd=G->edgeList;
-//cout<<NE<<" "<<NV<<endl;
 unsigned int edgec=0;
 unsigned int newV=0;
 for(int i=0;i<NV;i++)
@@ -83,7 +59,7 @@ for(int i=0;i<NV;i++)
         newV++;
                        }
 }
-//cout<<"no of doubtful"<<" "<<newV<<endl;
+cout<<"no of doubtful"<<" "<<newV<<endl;
 int nn=newV;
 bool *flaz=(bool *)malloc(sizeof(bool)*(NV+1));
 unsigned int *statIndices1=(unsigned int*)malloc(sizeof(unsigned int)*nn);
@@ -96,7 +72,7 @@ for(long i=0;i<NV+1;i++)  {
 
 unsigned int* vtxPtr=(G->edgeListPtrs);
 edge *vtxInd=(G->edgeList);
-//cout<<"OKK"<<endl;
+
 vector<unsigned int> v;
 #pragma omp parallel for
 for(long i=0;i<NV;i++)
@@ -108,50 +84,41 @@ for(long i=0;i<NV;i++)
         long adj2 = vtxPtr[i+1];
     
         for(long j=adj1;j<adj2;j++){
-		//if(G->bord[i] && !bordercheck ){
+		
                    
 
-                if(dirtycpu[(vtxInd[j].tail+1)] && !flaz[(vtxInd[j].tail+1)]){
-                         v.push_back(vtxInd[j].tail+1);
-                         flaz[(vtxInd[j].tail+1)]=true;
+                if(dirtycpu[(vtxInd[j].tail)] && !flaz[(vtxInd[j].tail)]){
+                         v.push_back(vtxInd[j].tail);
+                         flaz[(vtxInd[j].tail)]=true;
                                                                        	}
                                 
 					}
         }
     }
-//cout<<"okk1"<<endl;
+cout<<"....."<<endl;
 std::sort(v.begin(), v.begin()+v.size());
-//cout<<"k"<<endl;
-//cout<<"size="<<v.size()<<endl;
 unsigned int totaledgec=0;
-//ofstream fout("f1.txt");
-int pos1;
-int *pos=(int *)malloc(sizeof(int)*nn);
+int pos1=0;
+int *pos=(int *)malloc(sizeof(int)*nn+1);
 #pragma omp parallel for
 for(long i=0;i<=nn;i++)
         pos[i]=0;
 vector<unsigned int> *ee=new vector<unsigned int>[nn];
-for(int i=0;i<nn;i++)
-	ee[i].resize(0);
+/*for(int i=0;i<nn;i++)
+	ee[i].resize(node);*/
 vector<unsigned int> *weight=new vector<unsigned int>[nn];
-for(int i=0;i<nn;i++)
-        weight[i].resize(0);
-//cout<<"what"<<endl;
-
+/*for(int i=0;i<nn;i++)
+        weight[i].resize(node);
+*/
+cout<<"no no"<<endl;
 int f;
 int ccd=0;
 pos1=0;
 int qq=0;
 vector<unsigned int> pos2;
-//cout<<"value"<<" "<<node<<endl;
 pos2.resize(node+1);
-//cout<<"problem size"<<" "<<pos2.size()<<endl;
 std::fill(pos2.begin(),pos2.begin()+pos2.size(),0);
 unsigned int checkpos=0;
-//unsigned int* edgesa1;
-//unsigned int *weighta1;
-//cout<<"done mys"<<endl;
-//int *f1=(int*)malloc(sizeof(int)*(node));
 map<unsigned int,unsigned int>** cluPtrIn = (map<unsigned int,unsigned int>**) malloc (nn*sizeof(map<unsigned int,unsigned int>*));
 assert(cluPtrIn != 0);
 map<unsigned int,unsigned int>** count = (map<unsigned int,unsigned int>**) malloc (nn*sizeof(map<unsigned int,unsigned int>*));
@@ -171,16 +138,16 @@ assert(count!=0);
                 }
         }*/
 (*(cluPtrIn[i]))[i]=0; 
-    
+ (*(count[i]))[i]=0;
         }
 
 
-//cout<<"no problem"<<endl;
+cout<<"no problem"<<endl;
  int k=0;
 #pragma omp parallel for
 for(long i=0;i<NV;i++)
 {
-	f=0;
+	f=0;k=0;
         if(dirtycpu[i])
         {
 	map<unsigned int, unsigned int>::iterator localIterator;
@@ -193,8 +160,8 @@ for(long i=0;i<NV;i++)
         long adj1 = vtxPtr[i];
         long adj2 = vtxPtr[i+1];
 	
-	for(long j=adj1;j<adj2;j++)
-        {
+//	for(long j=adj1;j<adj2;j++)
+  //      {
 			
                 if(G->bord[i] && !bordercheck ){
 			//cout<<G->bordno[i]<<"border"<<endl;	
@@ -205,23 +172,26 @@ for(long i=0;i<NV;i++)
 			
 	
 	for(std::vector<unsigned int> ::iterator it=G->bordvalue[i].begin();it<G->bordvalue[i].end();it++){
-	//		if(f1[c[*it-mid]]==0){
-//		unsigned int tail = vtxIndIn[j].tail;
-//			cout<<"......."<<endl;
-                        localIterator = cluPtrIn[qq]->find(*it);
-//		       cout<<"okk"<<endl;	
-                        if( localIterator != cluPtrIn[qq]->end() ) {
-
-                                 __sync_fetch_and_add(&(*(cluPtrIn[qq]))[*it] ,1);
-                                int pos= (*(count[qq]))[*it];
+	
+                        localIterator = cluPtrIn[qq]->find(c[*it-mid]);
+		     //  cout<<"okk"<<endl;	
+                       if( localIterator != cluPtrIn[qq]->end() ) {
+		//		cout<<"1"<<endl;
+                                 __sync_fetch_and_add(&(*(cluPtrIn[qq]))[c[*it-mid]] ,1);
+		//		cout<<"2"<<endl;
+                                int pos= (*(count[qq]))[c[*it-mid]];
                                // edge2[Gnew->edgeListPtrs[cc]+pos].weight=(*(cluPtrIn[ii]))[*it];
-                               weight[qq].at(pos)=(*(cluPtrIn[qq]))[*it] ;
-				weight[qq].at(pos+1)=(*(cluPtrIn[qq]))[*it]; 
+                              // cout<<"pos"<<" "<<pos<<" "<<weight[qq].size()<<endl; 
+				if((pos+1)<weight[qq].size()){
+                              weight[qq].at(pos)=(*(cluPtrIn[qq]))[c[*it-mid]] ;
+		//		cout<<"3"<<endl;
+				weight[qq].at(pos+1)=(*(cluPtrIn[qq]))[c[*it-mid]]; }
+			//	cout<<".."<<endl;
                                 }
 
-                        else{
+                       else{
 
-                                (*(cluPtrIn[qq]))[*it] = 1;
+                                (*(cluPtrIn[qq]))[c[*it-mid]] = 1;
                                // edge2[Gnew->edgeListPtrs[cc]+k].head=ii+(cc);
                                // edge2[Gnew->edgeListPtrs[cc]+k].tail=C_orig[G1->edgeList[j].tail];
 
@@ -232,12 +202,14 @@ for(long i=0;i<NV;i++)
                         		 weight[qq].push_back(1);
                         		 weight[qq].push_back(1);
 
-                                        (*(count[qq]))[*it]=k;
+                                        (*(count[qq]))[c[*it-mid]]=k;
                                 __sync_fetch_and_add(&k,1);
                               //  __sync_fetch_and_add(&k1,1);
                           //    cout<<"value of k"<<k<<endl;
-                                }
-															}
+                                }												
+	}
+//cout<<"::::::::::"<<endl;
+			G->bordvalue[i].clear(); G->bordno[i]=0; G->bord[i]=false;
 /*			ee[qq].push_back(qq);
                         ee[qq].push_back(*it);
 			weight[qq].push_back(1);
@@ -263,14 +235,16 @@ for(long i=0;i<NV;i++)
 			//	 __sync_fetch_and_add(&pos1,1);
 					
 
-}
-                                         
-      if(dirtycpu[(vtxInd[j].tail)+1]){
+//}
+        
+/*      for(long j=adj1;j<adj2;j++)
+{ 
+      if(dirtycpu[(vtxInd[j].tail)]){
 
                 //statIndices1[qq]=statIndices1[qq]+1;
 		 __sync_fetch_and_add(&statIndices1[qq],1);
                 std::vector<unsigned int>::iterator itr;
-                itr=std::find (v.begin(), v.begin()+v.size(), (vtxInd[j].tail+1));
+                itr=std::find (v.begin(), v.begin()+v.size(), (vtxInd[j].tail));
 		 localIterator = cluPtrIn[qq]->find((itr - v.begin()) +f);
                  if( localIterator != cluPtrIn[qq]->end() ) {
 				 __sync_fetch_and_add(&(*(cluPtrIn[qq]))[(itr - v.begin()) +f] ,1);
@@ -295,7 +269,15 @@ for(long i=0;i<NV;i++)
 
                                  }
         
-	}	
+	}}*/
+/*	for(long j=adj1;j<adj2;j++)
+	{
+		G->bord[C_orig[(vtxInd[j].tail)]]=true;
+		G->bordno[C_orig[(vtxInd[j].tail)]]+=1;
+		G->bordvalue[C_orig[(vtxInd[j].tail)]].push_back(qq+node);
+		
+
+	}*/
 }
 //cout<<"1"<<endl;
 //cout<<"size"<<" "<<ee[qq].size()<<endl;
@@ -317,15 +299,42 @@ if(ee[qq].size()!=0){
         }
 
                 }*/
-	if(qq<10)
-	cout<<ee[qq].size()<<" "<<weight[qq].size()<<endl;
+//	if(qq<10)
+//	cout<<ee[qq].size()<<" "<<weight[qq].size()<<endl;
          __sync_fetch_and_add(&qq,1);
 	k=0;
         }
 
 
 }
-//cout<<"1 done"<<" "<<qq<<endl;
+int q=0;
+cout<<"1 done"<<" "<<qq<<endl;
+
+for(long i=0;i<NV;i++)
+{
+        f=0;
+       if(dirtycpu[i])
+        {
+	long adj1 = vtxPtr[i];
+        long adj2 = vtxPtr[i+1];
+
+       		for(long j=adj1;j<adj2;j++)
+        {
+	 if(!dirtycpu[(vtxInd[j].tail)]){
+//		cout<<C_orig[(vtxInd[j].tail)]<<endl;
+                G->bord[C_orig[(vtxInd[j].tail)]]=true;
+                G->bordno[C_orig[(vtxInd[j].tail)]]+=1;
+                G->bordvalue[C_orig[(vtxInd[j].tail)]].push_back(q);
+			}
+                
+
+        }
+
+	}
+	q++;
+}
+
+cout<<"?"<<endl;
 unsigned int k1=0,k2=0;
  int size=0; int size1=0;
 /*for(int i=0;i<10;i++)
@@ -367,7 +376,7 @@ if(ee[i].size()>0 &&weight[qq].size()>0){
 
 }
 
-//cout<<"happening"<<" "<<totaledgec<<" "<<size1<<endl;
+cout<<"happening"<<" "<<totaledgec<<" "<<size1<<endl;
 
 mo->vertex=qq;
 

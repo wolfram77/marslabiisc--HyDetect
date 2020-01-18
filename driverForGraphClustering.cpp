@@ -193,6 +193,7 @@ int main(int argc, char** argv) {
   graph* G1 = (graph *) malloc (sizeof(graph));
   graph* G2 = (graph *) malloc (sizeof(graph));
   graph* Gnew=(graph *) malloc (sizeof(graph));
+	
   graph* Gnew1 = (graph *) malloc (sizeof(graph));
   
   graph g1;
@@ -201,7 +202,7 @@ int main(int argc, char** argv) {
   double partTime = get_time();
   double sizeofData = 0;
   int parts = 2;
-  double partitionRatio=0.5;
+  double partitionRatio=.75;
   unsigned int mid=g1.partGraph( 2, partitionRatio);
 
   unsigned int total=g1.nnodes;
@@ -215,7 +216,7 @@ int main(int argc, char** argv) {
   bool *dirtygpu=new bool[total-NV]; //need to change
   bool *dirtyg=new bool[total-NV]; //need to change
   //cout<<"4"<<endl;
-  unsigned int *C_orig=(unsigned int *)malloc(sizeof(unsigned int)*NV);
+  long *C_orig=(long *)malloc(sizeof(long)*NV);
   for(long i=0;i<NV;i++)
 	dirtycpu[i]=false;
   for(long i=0;i<total-NV;i++){
@@ -268,8 +269,9 @@ int main(int argc, char** argv) {
 	Community dev_community(input_graph, -1, .000001);
 	dev1_community=&dev_community;
 long *c=(long *)malloc((total-mid)*sizeof(long));
-for(int i=0;i<total-NV;i++)
-	c[i]=-1;
+long *cact=(long *)malloc((total-mid)*sizeof(long));
+for(int i=0;i<total-NV;i++){
+	c[i]=-1;cact[i]=0;}
 	int i=0;
 
 	for(std::vector<unsigned long>::iterator it=input_graph.degrees.begin();it<input_graph.degrees.end();it++)
@@ -278,6 +280,7 @@ for(int i=0;i<total-NV;i++)
                 }
 	i=0;
 //	return 0;
+ int f=0;
 	for(std::vector<unsigned int>::iterator it=input_graph.links.begin();it<input_graph.links.end();it++)
                 {*(edges+i)=*it;
                         i++;
@@ -288,7 +291,7 @@ for(int i=0;i<total-NV;i++)
                 #pragma omp section
                 {
                  
-		int f=gpuonly(input_graph,c,statIndices,edges,dev1_community,dirtyg,dirtygpu,0,G1,mid);
+		f=gpuonly(input_graph,c,statIndices,edges,dev1_community,dirtyg,dirtygpu,0,G1,mid);
 	cout<<(*dev1_community).g.nb_nodes<<endl;
 //	print_vector((*dev1_community).g.weights,"weights");
 //	print_vector((*dev1_community).g.links,"links");
@@ -304,9 +307,14 @@ for(int i=0;i<total-NV;i++)
 		}
 
 	}
-
-
-
+//for(int i=0;i<input_graph.nb_nodes;i++)
+//	cout<<"comc"<<" "<<c[i]<<endl;
+//graph *Gnewc=(graph *)malloc(sizeof(graph));
+//Gnewc=cpuonly(Gnew,Gnew,Gnew,C_orig,dirty,dirtycpu,1);
+//return 0;
+(Gnew->bord)=(bool *)malloc(sizeof(bool)*Gnew->numVertices);
+(Gnew->bordno)=(unsigned int *)malloc(sizeof(unsigned int)*Gnew->numVertices);
+ Gnew->bordvalue=new vector<unsigned int>[Gnew->numVertices];
  // duplicateGivenGraph(&g1,G);
 
 //mo is the structure to move to GPU partition
@@ -328,8 +336,9 @@ int nn=newV;
 move1 mo;
 
 
-verticesToMoveToGPU(G1,dirtycpu,&mo,c,mid,(*dev1_community).g.nb_nodes);
-//cout<<"!"<<endl;
+verticesToMoveToGPU(G1,dirtycpu,&mo,c,mid,(*dev1_community).g.nb_nodes,C_orig);
+cout<<"!"<<endl;
+//return 0;
 //cout<<mo.vertex<<" "<<mo.edg<<endl;
 
 //cout<<mo.edgesa[0]<<endl;
@@ -342,19 +351,25 @@ unsigned int newV1=0;
 unsigned int newV1d=0;
 for(int i=0;i<total-NV;i++)
 {
-        if(dirtygpu[i]){
-        newV1++;
+       // if(dirtygpu[i])
+      //  newV1++;
 	
 	if(!dirtygpu[i] && dirtyg[i])
 	newV1d++;
 	
-			}	
+		//	}	
 }
 move2 mo1 ;
 
 verticesToMoveToCPU(statIndices,edges,dirtygpu,&mo1,C_orig,total,NV,&g1,Gnew,mid);
-
- NV=G1->numVertices;
+int it=1;
+for(int i=0;i<Gnew->numVertices;i++)
+	{
+		Gnew->bord[i]=G->bord[i];
+		Gnew->bordno[i]=G->bordno[i];
+		Gnew->bordvalue[i]=G->bordvalue[i];
+	}
+NV=G1->numVertices;
 unsigned int  NE=G1->numEdges;
 unsigned int * vtxPtr=(G1->edgeListPtrs);
 //cout<<vtxPtr<<endl;
@@ -377,7 +392,7 @@ for(int i=0;i<Gnew->numVertices;i++){
 	dirty3[i]=false;
 	dirty2[i]=true;
 	}
-//cout<<"((("<<endl;
+cout<<"((("<<endl;
 for(long i=0;i<NV;i++){
         f1[i]=false;
         count1[i]=0;}
@@ -395,16 +410,47 @@ for(long i=0;i<NV;i++)
 int k=0;
 //cout<<")))"<<endl;
 
-long* c1=(long *)malloc(sizeof(long)*((*dev1_community).g.nb_nodes+newV1));
-for( int i=0;i<(*dev1_community).g.nb_nodes+newV1;i++)
+long* c1=(long *)malloc(sizeof(long)*((*dev1_community).g.nb_nodes+newV1d+mo.vertex));
+for( int i=0;i<(*dev1_community).g.nb_nodes+newV1d+mo.vertex;i++)
         c1[i]=-1;
+//turn 0;
+cout<<"our calculation"<<(*dev1_community).g.nb_nodes+newV1d+mo.vertex<<endl;
+long *co1=(long *)malloc(sizeof(long)*(Gnew->numVertices+newVd+mo1.vertex));
+for(int i=0;i<Gnew->numVertices+newVd+mo1.vertex;i++)
+	co1[i]=0;
+Gnew1=modifyCPUstructure(Gnew,G1,dirty,C_orig,co1,&mo1,mid,(*dev1_community).g.nb_nodes,dirty3,dirtycpu);
+//return 0;
+/*for(int i=0;i<total-NV;i++)
+	cact[i]=c[i];*/
+Community cu=modifyGPUstructure(dev1_community,statIndices,edges,dirtyg,dirtygpu,c,total,NV,&mo,Gnew,mid,c1,1,cact);
+statIndices=(unsigned int *)malloc(sizeof(unsigned int)*((*dev1_community).g.nb_nodes));
+edges=(unsigned int *)malloc(sizeof(unsigned int)*(*dev1_community).g.nb_links);
+for(int i=0;i<(*dev1_community).g.nb_nodes;i++)
+        statIndices[i]=(*dev1_community).g.indices[i];
+for(int i=0;i<(*dev1_community).g.nb_links;i++)
+        edges[i]=(*dev1_community).g.links[i];
+cout<<"done"<<" "<<newV1d<<" "<<newV1<<endl;
+//return 0;
+newV1=0;
+//for(int i=0;i<Gnew1->numVertices;i++)
+//	dirty3[i]=true;
+//to change
+for(int i=0;i<cu.g.nb_nodes;i++){
+	dirtyg[i]=false;
+	dirtygpu[i]=false;}
+/*return 0;
+for(int i=0;i<(*dev1_community).g.nb_nodes;i++)
+	{
 
-Gnew1=modifyCPUstructure(Gnew,G1,dirty,C_orig,&mo1,mid,(*dev1_community).g.nb_nodes,dirty3);
-Community cu=modifyGPUstructure(dev1_community,statIndices,edges,dirtyg,c,total,NV,&mo,Gnew,mid,c1);
-
+		if(dirtyg[i]==true)
+			newV1++;
+	}
+*/
+/*for(int i=0;i<(*dev1_community).g.nb_nodes+newV1;i++)
+	cout<<"community"<<" "<<c1[i]<<endl;*/
 //return 0;
 //#pragma omp parallel for
-for(long i=0;i<NV;i++)
+/*for(long i=0;i<NV;i++)
         {
                 long adj1=vtxPtr[i];
                 long adj2=vtxPtr[i+1];
@@ -412,13 +458,13 @@ for(long i=0;i<NV;i++)
 //		cout<<"value of k"<<" "<<k<<endl;
       	 for(long j=adj1;j<adj2;j++)
                 {
-                        if(dirtycpu[(vtxInd[j].tail+1)]){
+                        if(dirtycpu[(vtxInd[j].tail)]){
                                 bord1[C_orig[i]]=true;
                                 bordno1[C_orig[i]]=bordno1[C_orig[i]]+1;
-                                bordvalue1[C_orig[i]].push_back(count1[(vtxInd[j].tail+1)]+newV1+((*dev1_community).g.nb_nodes));
-	//			fout<<count1[(vtxInd[j].tail+1)]+newV1+((*dev1_community).g.nb_nodes)<<endl;
+                                bordvalue1[C_orig[i]].push_back(count1[(vtxInd[j].tail)]+newV1+((*dev1_community).g.nb_nodes));
+	
 			  }
-			if(!dirtycpu[(vtxInd[j].tail+1)] && G1->bord[(vtxInd[j].tail+1)])
+			else if(!dirtycpu[(vtxInd[j].tail)] && G1->bord[(vtxInd[j].tail+1)-1])
 			{
 				bord1[C_orig[i]]=true;
 				bordno1[C_orig[i]]+=G1->bordvalue[i].size();
@@ -434,6 +480,25 @@ for(long i=0;i<NV;i++)
                 }
 		k++;
         }
+*/
+/*for(long i=0;i<NV;i++)
+	{
+
+		if(dirtycpu[i])
+		{
+
+			long adj1=vtxPtr[i];
+			long adj2=vtxPtr[i+1];
+			for(long j=adj1;j<adj2;j++)
+			{
+
+				bord1[C_orig[vtxInd[j].tail]]=true;
+				bordno1[C_orig[vtxInd[j].tail]]+=1;
+			        bordvalue1[C_orig[vtxInd[j].tail]].push_back();
+			}
+		}
+	}		
+*/			
 //cout<<"DD"<<endl;
 //move2 mo1 ;
 //verticesToMoveToCPU(statIndices,edges,dirtygpu,&mo1,C_orig,total,NV,&g1,Gnew,mid);
@@ -446,9 +511,22 @@ for(long i=0;i<NV;i++)
 //unsigned int *edgeListPtrsM=(unsigned int *)malloc(newV1*sizeof(unsigned int));
 //Gnew1=modifyCPUstructure(Gnew,G1,dirty,C_orig,&mo1,mid,(*dev1_community).g.nb_nodes,dirty3);
 //cout<<"*"<<newV1<<" "<<(cu).g.nb_nodes<<endl;
-verticesToMoveToGPU1(Gnew2,dirty3,&mo,c1,mid,(cu).g.nb_nodes);
-Community cu1=modifyGPUstructure(&cu,statIndices,edges,dirtyg,c1,total,NV,&mo,Gnew,mid,c);
-
+long *c2=(long *)malloc(sizeof(long)*(cu).g.nb_nodes+newV1);
+/*for( int i=0;i<(*dev1_community).g.nb_nodes+newV1d+mo.vertex;i++)
+        cout<<"community"<<" "<<c1[i]<<" "<<Gnew2->bord[0]<<endl;
+*/
+verticesToMoveToGPU1(Gnew2,Gnew1,dirty3,&mo,c1,mid,(cu).g.nb_nodes,f,co1);
+cout<<"ddone"<<endl;
+//return 0;
+/*for( int i=0;i<(*dev1_community).g.nb_nodes+newV1d+mo.vertex;i++)
+        cout<<"community"<<" "<<c1[i]<<endl;
+*/
+//return 0;
+total=mo.vertex+(cu).g.nb_nodes;
+it=0;
+Community cu1=modifyGPUstructure(&cu,statIndices,edges,dirtyg,dirtygpu,c1,total,(cu).g.nb_nodes,&mo,Gnew2,mid,c2,it,c);
+cout<<"////"<<endl;
+return 0;
 //return 0;
 /*unsigned int* c1=(unsigned int *)malloc(sizeof(unsigned int)*((*dev1_community).g.nb_nodes+newV1));
 //return 0;
@@ -461,16 +539,16 @@ for( int i=0;i<(*dev1_community).g.nb_nodes+newV1;i++)
 //return 0;
 //Community cu=modifyGPUstructure(dev1_community,statIndices,edges,dirtyg,c,total,NV,&mo,Gnew,mid,c1);
 int new1=0;
-return 0;
+//return 0;
 //cout<<"done community"<<endl;
-for(int i=0;i<Gnew->numVertices;i++)
+/*for(int i=0;i<Gnew->numVertices;i++)
         {
 
                 if(dirty3[i])
                         new1++;
 		dirty2[i]=true;
         }
-
+*/
 cout<<"**********"<<endl;
 /*NV=Gnew->numVertices;
 unsigned int NV1=NV+new1;
