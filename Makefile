@@ -1,8 +1,8 @@
 #!/bin/bash
 #GCC Compilers:
-CC  = nvcc 
-CPP = nvcc 
-#CFLAGS   = -Ofast -fopenmp -std=c99 
+CC  = nvcc
+CPP = nvcc
+#CFLAGS   = -Ofast -fopenmp -std=c99
 CFLAGS=-Xcompiler "-Wall -Wconversion -Wsign-conversion -Wextra -Wshadow -fopenmp" $(NVCC_ARCH) -Xptxas="-v"
 #CPPFLAGS = -Ofast -fopenmp -std=c++0x
 CPPFLAGS=-Xcompiler "-Wall -Wconversion -Wsign-conversion -Wextra -Wshadow -fopenmp" $(NVCC_ARCH) -Xptxas="-v"
@@ -10,9 +10,11 @@ CPPFLAGS=-Xcompiler "-Wall -Wconversion -Wsign-conversion -Wextra -Wshadow -fope
 ##############
 
 CUDAVERSION=8.0
-CFLAGS1= -I/usr/local/cuda-$(CUDAVERSION)/include -O3
+CUDADIR=/usr/local/cuda
+# CUDADIR=/usr/local/cuda-$(CUDAVERSION)
+CFLAGS1= -I$(CUDADIR)/include -O3
 
-CC1=/usr/local/cuda-$(CUDAVERSION)/bin/nvcc
+CC1=$(CUDADIR)/bin/nvcc
 DFLAGS= -D RUNONGPU
 CUDAFLAGS= -arch sm_35
 
@@ -21,7 +23,7 @@ DEPS = communityGPU.h  graphGPU.h  graphHOST.h openaddressing.h
 OBJ = binWiseGaussSeidel.o communityGPU.o preprocessing.o  aggregateCommunity.o coreutility.o independentKernels.o gatherInformation.o graphHOST.o graphGPU.o main.o assignGraph.o computeModularity.o computeTime.o
 
 
-LIBS1= -L/usr/local/cuda-$(CUDAVERSION)/lib64 -lcudart
+LIBS1= -L$(CUDADIR)/lib64 -lcudart
 EXEC=run_CU_community
 
 ################
@@ -58,12 +60,12 @@ coloringDistanceOne.o utilityClusteringFunctions.o \
 parallelLouvainMethod.o parallelLouvainWithColoring.o \
 louvainMultiPhaseRun.o parseInputParameters.o vertexFollowing.o cpuonly.o\
 verticesToMoveToGPU.o verticesToMoveToCPU.o modifyCPUstructure.o modifyGPUstructure.o movefinal.o verticesToMoveToGPU1.o\
-	
+
 
 all: $(TARGET_1) message
 
 $(TARGET_1): $(OBJECTS) $(TARGET_1).o
-	 $(CPP) $(LDFLAGS)   -o  $(TARGET_1) $(TARGET_1).o $(OBJECTS) $(LIBS1)  
+	 $(CPP) $(LDFLAGS)   -o  $(TARGET_1) $(TARGET_1).o $(OBJECTS) $(LIBS1)
 .cu.o: $(DEPS)
 	$(CC1) -o $@ -c $< $(CFLAGS1) $(DFLAGS) $(CUDAFLAGS)
 
@@ -72,7 +74,7 @@ $(TARGET_1): $(OBJECTS) $(TARGET_1).o
 
 #############
 #$(EXEC): $(OBJ)
-#	$(CC1) -o $@ $^ $(LIBS1) 
+#	$(CC1) -o $@ $^ $(LIBS1)
 ###########
 .c.o:
 	$(CC) $(CFLAGS)  -c $< -I$(INCLUDES) -o $@
@@ -90,34 +92,32 @@ message:
 	echo "Executables: " $(TARGET1) " have been created"
 
 #CUDAVERSION=8.0
-#CFLAGS1= -I/usr/local/cuda-$(CUDAVERSION)/include -O3 
+#CFLAGS1= -I/usr/local/cuda-$(CUDAVERSION)/include -O3
 
-#CC1=/usr/local/cuda-$(CUDAVERSION)/bin/nvcc 
+#CC1=/usr/local/cuda-$(CUDAVERSION)/bin/nvcc
 #DFLAGS= -D RUNONGPU
-#CUDAFLAGS= -arch sm_35 
+#CUDAFLAGS= -arch sm_35
 
 #DEPS = communityGPU.h  graphGPU.h  graphHOST.h openaddressing.h
 
 #OBJ = binWiseGaussSeidel.o communityGPU.o preprocessing.o  aggregateCommunity.o coreutility.o independentKernels.o gatherInformation.o graphHOST.o graphGPU.o main.o assignGraph.o computeModularity.o computeTime.o
 
 
-#LIBS1= -L/usr/local/cuda-$(CUDAVERSION)/lib64 -lcudart 
+#LIBS1= -L/usr/local/cuda-$(CUDAVERSION)/lib64 -lcudart
 
 
 #EXEC=run_CU_community
 all:$(EXEC)
 
 #$(EXEC): $(OBJ)
-#	$(CC1) -o $@ $^ $(LIBS1) 
+#	$(CC1) -o $@ $^ $(LIBS1)
 
 %.o: %.cu $(DEPS)
 	$(CC1) -o $@ -c $< $(CFLAGS1) $(DFLAGS) $(CUDAFLAGS)
 
 %.o: %.cpp $(DEPS)
-	$(CC1) -o $@ -c $< $(CFLAGS1) 
+	$(CC1) -o $@ -c $< $(CFLAGS1)
 
 
 clean:
 	rm -f *.o *~ $(EXEC)
-
-
